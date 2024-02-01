@@ -1,4 +1,4 @@
-> # BROKEN ARROW
+# BROKEN ARROW
 
 ## Integrantes
  - Jorge Martínez
