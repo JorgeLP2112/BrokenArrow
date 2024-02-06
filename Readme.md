@@ -1,4 +1,4 @@
-# BROKEN ARROW
+# BROKEN ARROW :dart:
 
 ## Integrantes
  - Jorge Martínez
@@ -6,6 +6,8 @@
  - Kaleb Ruelas
 
 ## Proyecto
-
+Por el momento no tenemos un proyecto definido
 
 ## Stack
+ - NextJs
+ - MongoDB
