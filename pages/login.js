@@ -1,7 +1,13 @@
 import BaseLayout from "../components/BaseLayout";
 
 const Home = () => {
-  return <BaseLayout>Soy el inicio</BaseLayout>;
+  return <BaseLayout>
+  <div>
+    <h1>
+      Soy el login
+    </h1>
+  </div>
+  </BaseLayout>;
 };
 
 export default Home;
