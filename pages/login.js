@@ -1,7 +1,11 @@
+import Link from "next/link";
 import BaseLayout from "../components/BaseLayout";
 
 const Home = () => {
-  return <BaseLayout>Soy el inicio</BaseLayout>;
+    return <BaseLayout>
+
+
+    </BaseLayout>;
 };
 
 export default Home;
