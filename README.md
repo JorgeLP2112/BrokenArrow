@@ -6,7 +6,7 @@
  - Kaleb Ruelas
 
 ## Proyecto
-Por el momento no tenemos un proyecto definido
+Vamos a desarrollar una plataforma web donde las empresas de Chihuahua puedan publicar vacantes enfocadas a estudiantes, y dentro del mismo sitio, los jóvenes podrán buscar y aplicar a las distintas ofertas.
 
 ## Stack
  - NextJs
