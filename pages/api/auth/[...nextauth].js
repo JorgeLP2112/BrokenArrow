@@ -54,7 +54,9 @@ export const authOptions = {
         return null;
       },
     }),
-  ], //,
+  ],
+  secret: process.env.NEXTAUTH_SECRET,
+  //,
   // callbacks: {
   //     async signIn({ account, profile }) {
   //         if (account.provider === "google") {
