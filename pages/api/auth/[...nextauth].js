@@ -7,7 +7,6 @@ import clientPromise from "./lib/mongodb"
 
 export const authOptions = {
 	adapter: MongoDBAdapter(clientPromise),
-	// Configure one or more authentication providers
 	providers: [
 		DiscordProvider({
 			clientId: process.env.DISCORD_CLIENT_ID,
