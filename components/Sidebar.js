@@ -60,6 +60,18 @@ const Sidebar = () => {
                                     Sign out
                                 </button>
                             </li>
+                            <li className="sidebar__item">
+                                <Link
+                                    className={`sidebar__link ${router.pathname === "/UsuariosActivos" ? "sidebar__link--active" : ""
+                                        }`}
+                                    href="/UsuariosActivos"
+                                >
+                                    <span className="sidebar__icon">
+                                        <FiMail />
+                                    </span>
+                                    <span className="sidebar__name">Usuarios Activos</span>
+                                </Link>
+                            </li>
                         </>
                     ) : (
                         <>
@@ -72,18 +84,7 @@ const Sidebar = () => {
                                     Iniciar Sesion
                                 </button>
                             </li>
-                            <li className="sidebar__item">
-                                <Link
-                                    className={`sidebar__link ${router.pathname === "/singup" ? "sidebar__link--active" : ""
-                                        }`}
-                                    href="/singup"
-                                >
-                                    <span className="sidebar__icon">
-                                        <FiMail />
-                                    </span>
-                                    <span className="sidebar__name">Registrarse</span>
-                                </Link>
-                            </li>
+
                         </>
                     )}
                 </ul>
