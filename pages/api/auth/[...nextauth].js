@@ -5,12 +5,20 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@lib/mongodb";
 import { dateNowUnix } from "@/utils/dates";
 import GithubProvider from "next-auth/providers/github"
-
+import LinkedInProvider from "next-auth/providers/linkedin";
 
 export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
   // Configure one or more authentication providers
   providers: [
+    GithubProvider({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET
+    }),
+    LinkedInProvider({
+      clientId: process.env.LINKEDIN_CLIENT_ID,
+      clientSecret: process.env.LINKEDIN_CLIENT_SECRET
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
