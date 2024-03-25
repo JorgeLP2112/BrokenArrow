@@ -49,6 +49,37 @@ const Sidebar = () => {
 
                     {session ? (
                         <>
+                            {session.user.roles[0] === "Admin" ? (
+                                <>
+                                    <li className="sidebar__item">
+                                        <Link
+                                            className={`sidebar__link ${router.pathname === "/Admins/UsuariosActivos" ? "sidebar__link--active" : ""
+                                                }`}
+                                            href="/Admins/UsuariosActivos"
+                                        >
+                                            <span className="sidebar__icon">
+                                                <FiMail />
+                                            </span>
+                                            <span className="sidebar__name">Usuarios Activos</span>
+                                        </Link>
+                                    </li>
+                                </>
+                            ) : (
+                                <>
+                                    <li className="sidebar__item">
+                                        <Link
+                                            className={`sidebar__link ${router.pathname === "/Users" ? "sidebar__link--active" : ""
+                                                }`}
+                                            href="/Users/"
+                                        >
+                                            <span className="sidebar__icon">
+                                                <FiMail />
+                                            </span>
+                                            <span className="sidebar__name">Publicaciones</span>
+                                        </Link>
+                                    </li>
+                                </>
+                            )}
                             <li className="sidebar__item">
 
                                 <p className="sidebar__link">Signed in as {session.user.name}
@@ -59,18 +90,6 @@ const Sidebar = () => {
                                     </span>
                                     Sign out
                                 </button>
-                            </li>
-                            <li className="sidebar__item">
-                                <Link
-                                    className={`sidebar__link ${router.pathname === "/UsuariosActivos" ? "sidebar__link--active" : ""
-                                        }`}
-                                    href="/UsuariosActivos"
-                                >
-                                    <span className="sidebar__icon">
-                                        <FiMail />
-                                    </span>
-                                    <span className="sidebar__name">Usuarios Activos</span>
-                                </Link>
                             </li>
                         </>
                     ) : (
