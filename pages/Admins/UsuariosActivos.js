@@ -102,10 +102,14 @@ const main = () => {
     };
 
     useEffect(() => {
-        if (!loading && (!session || !(session.user.roles && session.user.roles[0] === "Admin"))) {
-            router.push('../Users');
-        } else {
-            fetchUsers();
+        if (!loading) {
+            if (!session) {
+                router.push('../');
+            } else if (!(session.user.roles && session.user.roles[0] === "Admin")) {
+                router.push('../Users');
+            } else {
+                fetchUsers();
+            }
         }
     }, [session, router, loading]);
 
