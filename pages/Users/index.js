@@ -1,5 +1,8 @@
+import { useSession} from "next-auth/react";
 
 const main = () => {
-    return (<p>Usuario</p>)
+    const { data: session, status } = useSession();
+
+    return (<p>{session.user.name}</p>)
 };
 export default main;
