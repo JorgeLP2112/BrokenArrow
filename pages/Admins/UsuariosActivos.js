@@ -1,25 +1,9 @@
-import { useEffect, useState, useCallback, useContext } from 'react';
-import { SidebarContext } from '@/context/SidebarContext';
+import { useEffect, useState, useCallback } from 'react';
 import BaseLayout from "@/components/BaseLayout";
 import { useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
 
 const main = () => {
-
-    const { isCollapsed } = useContext(SidebarContext);
-
-    useEffect(() => {
-        const layout = document.querySelector('.layout');
-        const btn = document.querySelector('.btn');
-
-        if (isCollapsed) {
-            layout.style.marginLeft = 'var(--sidebar-collapsed-width)';
-            btn.style.left = '4rem';
-        } else {
-            layout.style.marginLeft = 'var(--sidebar-width)';
-            btn.style.left = '87%';
-        }
-    }, [isCollapsed]);
 
     const { data: session, status } = useSession();
     const [users, setUsers] = useState([]);

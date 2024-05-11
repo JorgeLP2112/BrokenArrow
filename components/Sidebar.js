@@ -16,9 +16,11 @@ const Sidebar = () => {
     const { isCollapsed, toggleSidebarcollapse } = useContext(SidebarContext);
     const { data: session } = useSession();
 
+    const btnClass = isCollapsed ? 'btn-collapsed' : 'btn-expanded';
+
     return (
         <div className="sidebar__wrapper">
-            <button className="btn" onClick={toggleSidebarcollapse}>
+            <button className={`btn ${btnClass}`} onClick={toggleSidebarcollapse}>
                 {isCollapsed ? <MdKeyboardArrowRight /> : <MdKeyboardArrowLeft />}
             </button>
             <aside className="sidebar" data-collapse={isCollapsed}>
@@ -78,17 +80,26 @@ const Sidebar = () => {
                                             <span className="sidebar__name">Publicaciones</span>
                                         </Link>
                                     </li>
+                                    <li className="sidebar__item">
+                                        <Link
+                                            className={`sidebar__link ${router.pathname === `/Users/${session.user.id}` ? `sidebar__link--active` : ""
+                                                }`}
+                                            href={`/Users/${session.user.id}`}
+                                        >
+                                            <span className="sidebar__icon">
+                                                <FiMail />
+                                            </span>
+                                            <span className="sidebar__name">Perfil</span>
+                                        </Link>
+                                    </li>
                                 </>
                             )}
-                            <li className="sidebar__item">
-
-                                <p className="sidebar__link">Signed in as {session.user.name}
-                                </p>
+                            <li className="sidebar__item__SignOut">
                                 <button className="sidebar__link" onClick={() => signOut()}>
                                     <span className="sidebar__icon">
                                         <CiLogout />
                                     </span>
-                                    Sign out
+                                    <span className="sidebar__name">Sign Out</span>
                                 </button>
                             </li>
                         </>

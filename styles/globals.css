@@ -35,6 +35,22 @@ body {
   flex-grow: 1;
 }
 
+.layout-collapsed {
+  margin-left: var(--sidebar-collapsed-width);
+}
+
+.btn-collapsed {
+  left: 4rem;
+}
+
+.layout-expanded {
+  margin-left: var(--sidebar-width);
+}
+
+.btn-expanded {
+  left: 87%;
+}
+
 .sidebar__wrapper {
   position: fixed;
   top: 0;
@@ -81,6 +97,10 @@ body {
 
 .sidebar__list {
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-bottom: 1rem; /* Ajusta este valor según tus necesidades */
 }
 
 .sidebar__link {
@@ -133,4 +153,13 @@ body {
   cursor: pointer;
   transform: translateX(50%);
   font-size: 1.1rem;
+}
+
+.sidebar__item__SignOut {
+  margin-bottom: auto;
+  order: 1;
+}
+
+.sidebar__item {
+  order: 0;
 }
