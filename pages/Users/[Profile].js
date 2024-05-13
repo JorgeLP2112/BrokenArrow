@@ -10,14 +10,18 @@ const Home = () => {
     const loading = status === 'loading';
     const [user, setUser] = useState([]);
     const id = router.query.Profile;
-    const [isLoading, setIsLoading] = useState(true); // Nuevo estado
+    const [isLoading, setIsLoading] = useState(false); // Nuevo estado
 
     useEffect(() => {
         if (loading) return;
         if (!session) {
             router.push('../');
+        } else if (session.user.isNewUser === true) {
+            console.log(session.user.isNewUser);
+            router.push(`/Users/profileForm`);
         } else {
-            fetchUser();
+            console.log(session.user.isNewUser);
+            //fetchUser();
         }
     }, [session, router, loading]);
 
@@ -44,7 +48,7 @@ const Home = () => {
     if (isLoading) {
         return <BaseLayout><div>Loading...</div></BaseLayout>; // O cualquier otro componente de carga
     }
-
+/*
     return <BaseLayout>
 
         <div className="bg-gray-100 p-4">
@@ -101,7 +105,7 @@ const Home = () => {
                                 </div>
                             </div>
                             */}
-
+/*
                             <div className="py-3 sm:order-none order-2">
                                 <h2 className="text-lg font-poppins font-bold text-top-color">Skills</h2>
                                 <div className="border-2 w-20 border-top-color my-3"></div>
@@ -183,6 +187,6 @@ const Home = () => {
             </div>
         </div>
     </BaseLayout>
-}
+}*/
 
 export default Home;

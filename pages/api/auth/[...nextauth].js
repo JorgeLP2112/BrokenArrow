@@ -62,10 +62,9 @@ export const authOptions = {
           user.roles = ["user"];
           user.createdAt = dateNowUnix();
           user.updatedAt = dateNowUnix();
-          user.lastLogin = dateNowUnix();
-        } else {
-          user.lastLogin = dateNowUnix();
+          user.isNewUser = true;
         }
+        user.lastLogin = dateNowUnix();
         // Save the updated user to the database
         const client = await clientPromise;
         await client
@@ -96,7 +95,8 @@ export const authOptions = {
         // Add the user's role to the session object
         session.user.roles = user.roles;
         session.user.id = user._id;
-        session.user.profile = user.profile
+        session.user.profile = user.profile;
+        session.user.isNewUser = user.isNewUser;
 
         return Promise.resolve(session);
       } catch (error) {
