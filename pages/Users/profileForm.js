@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useSession } from "next-auth/react";
+
+
 
 const Step1 = ({ nextStep, values, setValues }) => {
     const handleChange = (event) => {
@@ -269,20 +272,17 @@ const Step7 = ({ nextStep, prevStep, values, setValues }) => {
 };
 
 const Step8 = ({ nextStep, prevStep, values, setValues }) => {
-    const [softSkills, setSoftSkills] = React.useState(values.soft_skills || {});
+    const [softSkills, setSoftSkills] = React.useState(values.soft_skills || []);
 
     const handleChange = (index) => (event) => {
-        const newSoftSkills = { ...softSkills };
-        newSoftSkills[`skill${index + 1}`] = event.target.value;
+        const newSoftSkills = [...softSkills];
+        newSoftSkills[index] = event.target.value;
         setSoftSkills(newSoftSkills);
         setValues({ ...values, soft_skills: newSoftSkills });
     };
 
     const handleAddSoftSkill = () => {
-        setSoftSkills(prevSoftSkills => ({
-            ...prevSoftSkills,
-            [`skill${Object.keys(prevSoftSkills).length + 1}`]: ""
-        }));
+        setSoftSkills(prevSoftSkills => [...prevSoftSkills, ""]);
     };
 
     return (
@@ -290,11 +290,11 @@ const Step8 = ({ nextStep, prevStep, values, setValues }) => {
             <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
             <h2 className="text-lg font-bold mb-4">¿Con cuales habilidades blandas cuentas?</h2>
 
-            {Object.keys(softSkills).map((skillKey, index) => (
+            {softSkills.map((skill, index) => (
                 <div key={index} className="flex flex-wrap bg-gray-50">
                     <div className="w-full p-2">
                         <label className="block">Habilidad blanda</label>
-                        <input type="text" name={`soft_skill-${index}`} onChange={handleChange(index)} value={softSkills[skillKey]} className="w-full p-2 border rounded-md" />
+                        <input type="text" name={`soft_skill-${index}`} onChange={handleChange(index)} value={skill} className="w-full p-2 border rounded-md" />
                     </div>
                 </div>
             ))}
@@ -307,15 +307,50 @@ const Step8 = ({ nextStep, prevStep, values, setValues }) => {
     );
 };
 
-const Step9 = ({ nextStep, prevStep, handleChange, values }) => (
-    <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
-        <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
-        <label className="block">¿Cual es tu meta profesional?</label>
-        <textarea name="professionalGoal" onChange={handleChange} value={values.professionalGoal} className="w-full mb-4 p-2 border rounded-md"></textarea>
-        <button onClick={prevStep} className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2">Anterior</button>
-        <button onClick={nextStep} className="px-4 py-2 bg-blue-500 text-white rounded-md">Siguiente</button>
-    </div>
-);
+const Step9 = ({ nextStep, prevStep, values, setValues }) => {
+    const handleChange = (event) => {
+        setValues({ ...values, [event.target.name]: event.target.value });
+    };
+
+    return (
+        <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
+            <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
+            <label className="block">¿Cual es tu meta profesional?</label>
+            <textarea name="professionalGoal" onChange={handleChange} value={values.career_goals} className="w-full mb-4 p-2 border rounded-md"></textarea>
+            <button onClick={prevStep} className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2">Anterior</button>
+            <button onClick={nextStep} className="px-4 py-2 bg-blue-500 text-white rounded-md">Siguiente</button>
+        </div>
+    )
+};
+
+const Step10 = ({ values }) => {
+    const { data: session } = useSession();
+    const id = session.user.id;
+    console.log(values);
+    const handleSave = async () => {
+        const response = await fetch('/api/Users/' + id, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(values)
+        });
+
+        if (response.ok) {
+            alert('Información guardada con éxito');
+        } else {
+            alert('Hubo un error al guardar la información');
+        }
+    };
+
+    return (
+        <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
+            <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
+            <p>¿Deseas guardar tu información?</p>
+            <button onClick={handleSave} className="px-4 py-2 bg-blue-500 text-white rounded-md">Guardar</button>
+        </div>
+    );
+};
 
 const MultiStepForm = () => {
     const [step, setStep] = useState(1);
@@ -328,13 +363,11 @@ const MultiStepForm = () => {
         },
         work_experience: [],
         skills: [],
-        career: "",
         projects: [],
         languages: [],
         certifications: [],
         soft_skills: [],
         career_goals: "",
-        profile_links: {}
     });
 
     const nextStep = () => setStep(step + 1);
@@ -358,10 +391,9 @@ const MultiStepForm = () => {
         case 8:
             return <Step8 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
         case 9:
-            console.log(values);
             return <Step9 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
         case 10:
-            console.log(values);
+            return <Step10 values={values} />;
     }
 };
 

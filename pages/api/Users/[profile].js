@@ -77,7 +77,9 @@ async function modifyUser(req, res) {
 export default async function handler(req, res) {
     if (req.method === 'GET') {
         return getUsers(req, res);
-    } else {
+    } else if (req.method === 'POST') {
+        return newUser(req, res);
+    }else
         // Si el método no es GET, DELETE, o PUT, retornamos un error
         res.status(405).end(); // Method Not Allowed
     }
