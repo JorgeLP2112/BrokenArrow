@@ -1,31 +1,57 @@
 import React, { useState } from 'react';
 
-const Step1 = ({ nextStep, handleChange, values }) => (
-    <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
-        <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
-        <label className="block">Cuéntanos un poco sobre ti</label>
-        <textarea name="about" onChange={handleChange} value={values.about} className="w-full mb-4 p-2 border rounded-md"></textarea>
-        <button onClick={nextStep} className="px-4 py-2 bg-blue-500 text-white rounded-md">Siguiente</button>
-    </div>
-);
+const Step1 = ({ nextStep, values, setValues }) => {
+    const handleChange = (event) => {
+        setValues({ ...values, [event.target.name]: event.target.value });
+    };
 
-const Step2 = ({ nextStep, prevStep, handleChange, values }) => (
+    return (
+        <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
+            <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
+            <label className="block">Cuéntanos un poco sobre ti</label>
+            <textarea name="about" onChange={handleChange} value={values.about} className="w-full mb-4 p-2 border rounded-md"></textarea>
+            <button onClick={nextStep} className="px-4 py-2 bg-blue-500 text-white rounded-md">Siguiente</button>
+        </div>
+    );
+};
 
-    <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
-        <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
-        <h3 className="text-lg font-bold mb-4">Cuentanos sobre tu educacion universitaria</h3>
-        <label className="block">Carrera</label>
-        <input type="text" name="degree" onChange={handleChange} value={values.degree} className="w-full mb-4 p-2 border rounded-md" />
-        <label className="block">Institucion</label>
-        <input type="text" name="school" onChange={handleChange} value={values.school} className="w-full mb-4 p-2 border rounded-md" />
-        <label className="block">Inicio</label>
-        <input type="text" name="period" onChange={handleChange} value={values.period} className="w-full mb-4 p-2 border rounded-md" />        <button onClick={prevStep} className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2">Anterior</button>
-        <button onClick={nextStep} className="px-4 py-2 bg-blue-500 text-white rounded-md">Siguiente</button>
-    </div>
-);
+const Step2 = ({ nextStep, prevStep, values, setValues }) => {
+    const handleChange = (event) => {
+        setValues({
+            ...values,
+            education: {
+                ...values.education,
+                [event.target.name]: event.target.value
+            }
+        });
+    };
 
-const Step3 = ({ nextStep, prevStep, handleChange, values }) => {
+    return (
+        <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
+            <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
+            <h3 className="text-lg font-bold mb-4">Cuentanos sobre tu educacion universitaria</h3>
+            <label className="block">Carrera</label>
+            <input type="text" name="degree" onChange={handleChange} value={values.education.degree} className="w-full mb-4 p-2 border rounded-md" />
+            <label className="block">Institucion</label>
+            <input type="text" name="school" onChange={handleChange} value={values.education.school} className="w-full mb-4 p-2 border rounded-md" />
+            <label className="block">Fecha de inicio</label>
+            <input type="text" name="period" onChange={handleChange} value={values.education.period} className="w-full mb-4 p-2 border rounded-md" />
+            <button onClick={prevStep} className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2">Anterior</button>
+            <button onClick={nextStep} className="px-4 py-2 bg-blue-500 text-white rounded-md">Siguiente</button>
+        </div>
+    );
+};
+
+const Step3 = ({ nextStep, prevStep, values, setValues }) => {
     const [workExperience, setWorkExperience] = React.useState(values.work_experience);
+
+    const handleChange = (index, field) => (event) => {
+        const newWorkExperience = [...workExperience];
+        newWorkExperience[index][field] = event.target.value;
+        setWorkExperience(newWorkExperience);
+        setValues({ ...values, work_experience: newWorkExperience });
+
+    };
 
     const handleAddWorkExperience = () => {
         setWorkExperience(prevWorkExperience => [
@@ -43,19 +69,19 @@ const Step3 = ({ nextStep, prevStep, handleChange, values }) => {
                 <div key={index} className="flex flex-wrap bg-gray-50">
                     <div className="w-1/2 px-2">
                         <label className="block">Lugar</label>
-                        <input type="text" name={`company-${index}`} onChange={handleChange} value={work.company} className="w-full mb-4 p-2 border rounded-md" />
+                        <input type="text" name={`company-${index}`} onChange={handleChange(index, 'company')} value={work.company} className="w-full mb-4 p-2 border rounded-md" />
                     </div>
                     <div className="w-1/2 px-2">
                         <label className="block">Periodo</label>
-                        <input type="text" name={`period-${index}`} onChange={handleChange} value={work.period} className="w-full mb-4 p-2 border rounded-md" />
+                        <input type="text" name={`period-${index}`} onChange={handleChange(index, 'period')} value={work.period} className="w-full mb-4 p-2 border rounded-md" />
                     </div>
                     <div className="w-1/2 px-2">
                         <label className="block">Posición</label>
-                        <input type="text" name={`position-${index}`} onChange={handleChange} value={work.position} className="w-full mb-4 p-2 border rounded-md" />
+                        <input type="text" name={`position-${index}`} onChange={handleChange(index, 'position')} value={work.position} className="w-full mb-4 p-2 border rounded-md" />
                     </div>
                     <div className="w-1/2 px-2">
                         <label className="block">Descripción</label>
-                        <input type="text" name={`description-${index}`} onChange={handleChange} value={work.description} className="w-full mb-4 p-2 border rounded-md" />
+                        <input type="text" name={`description-${index}`} onChange={handleChange(index, 'description')} value={work.description} className="w-full mb-4 p-2 border rounded-md" />
                     </div>
                 </div>
             ))}
@@ -68,8 +94,15 @@ const Step3 = ({ nextStep, prevStep, handleChange, values }) => {
     );
 };
 
-const Step4 = ({ nextStep, prevStep, handleChange, values }) => {
+const Step4 = ({ nextStep, prevStep, values, setValues }) => {
     const [projects, setProjects] = React.useState(values.projects);
+
+    const handleChange = (index, field) => (event) => {
+        const newProjects = [...projects];
+        newProjects[index][field] = event.target.value;
+        setProjects(newProjects);
+        setValues({ ...values, projects: newProjects });
+    };
 
     const handleAddProject = () => {
         setProjects(prevProjects => [
@@ -86,10 +119,10 @@ const Step4 = ({ nextStep, prevStep, handleChange, values }) => {
             {projects.map((project, index) => (
                 <div key={index} className="flex flex-wrap bg-gray-50">
                     <div className="w-1/2 px-2">
-                        <input type="text" name={`projectName-${index}`} onChange={handleChange} value={project.name} placeholder='Nombre del proyecto' className="w-full mb-4 p-2 border rounded-md" />
+                        <input type="text" name={`projectName-${index}`} onChange={handleChange(index, 'name')} value={project.name} placeholder='Nombre del proyecto' className="w-full mb-4 p-2 border rounded-md" />
                     </div>
                     <div className="w-1/2 px-2">
-                        <input type="text" name={`projectDescription-${index}`} onChange={handleChange} value={project.description} placeholder='Descripción' className="w-full mb-4 p-2 border rounded-md" />
+                        <input type="text" name={`projectDescription-${index}`} onChange={handleChange(index, 'description')} value={project.description} placeholder='Descripción' className="w-full mb-4 p-2 border rounded-md" />
                     </div>
                 </div>
             ))}
@@ -102,14 +135,18 @@ const Step4 = ({ nextStep, prevStep, handleChange, values }) => {
     );
 };
 
-const Step5 = ({ nextStep, prevStep, handleChange, values }) => {
-    const [skills, setSkills] = React.useState(values.skills.length > 0 ? values.skills : [""]);
+const Step5 = ({ nextStep, prevStep, values, setValues }) => {
+    const [skills, setSkills] = React.useState(values.skills || []);
+
+    const handleChange = (index) => (event) => {
+        const newSkills = [...skills];
+        newSkills[index] = event.target.value;
+        setSkills(newSkills);
+        setValues({ ...values, skills: newSkills });
+    };
 
     const handleAddSkill = () => {
-        setSkills(prevSkills => [
-            ...prevSkills,
-            ""
-        ]);
+        setSkills(prevSkills => ([...prevSkills, ""]));
     };
 
     return (
@@ -117,10 +154,10 @@ const Step5 = ({ nextStep, prevStep, handleChange, values }) => {
             <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
             <h2 className="text-lg font-bold mb-4">¿Que habilidades tecnicas posees?</h2>
 
-            {skills.map((skill, index) => (
+            {Object.keys(skills).map((skillKey, index) => (
                 <div key={index} className="flex flex-wrap bg-gray-50">
                     <div className="w-full p-2">
-                        <input type="text" name={`skill-${index}`} onChange={handleChange} value={skill} placeholder='Habilidad' className="w-full p-2 border rounded-md" />
+                        <input type="text" name={`skill-${index}`} onChange={handleChange(index)} value={skills[skillKey]} placeholder='Habilidad' className="w-full p-2 border rounded-md" />
                     </div>
                 </div>
             ))}
@@ -133,13 +170,20 @@ const Step5 = ({ nextStep, prevStep, handleChange, values }) => {
     );
 };
 
-const Step6 = ({ nextStep, prevStep, handleChange, values }) => {
-    const [languages, setLanguages] = React.useState(values.languages.length > 0 ? values.languages : [{ language: "", level: "" }]);
+const Step6 = ({ nextStep, prevStep, values, setValues }) => {
+    const [languages, setLanguages] = React.useState(values.languages);
+
+    const handleChange = (index, field) => (event) => {
+        const newLanguages = [...languages];
+        newLanguages[index][field] = event.target.value;
+        setLanguages(newLanguages);
+        setValues({ ...values, languages: newLanguages });
+    };
 
     const handleAddLanguage = () => {
         setLanguages(prevLanguages => [
             ...prevLanguages,
-            { language: "", level: "" }
+            { language: "", proficiency: "" }
         ]);
     };
 
@@ -152,11 +196,11 @@ const Step6 = ({ nextStep, prevStep, handleChange, values }) => {
                 <div key={index} className="flex flex-wrap bg-gray-50">
                     <div className="w-1/2 p-2">
                         <label className="block">Idioma</label>
-                        <input type="text" name={`language-${index}`} onChange={handleChange} value={lang.language} className="w-full p-2 border rounded-md" />
+                        <input type="text" name={`language-${index}`} onChange={handleChange(index, 'language')} value={lang.language} className="w-full p-2 border rounded-md" />
                     </div>
                     <div className="w-1/2 p-2">
                         <label className="block">Nivel</label>
-                        <select name={`level-${index}`} onChange={handleChange} value={lang.level} className="w-full p-2 border rounded-md">
+                        <select name={`proficiency-${index}`} onChange={handleChange(index, 'proficiency')} value={lang.proficiency} className="w-full p-2 border rounded-md">
                             <option value="">Selecciona un nivel</option>
                             <option value="A0">A0: Principiante</option>
                             <option value="A1-A2">A1-A2: Básico</option>
@@ -177,13 +221,20 @@ const Step6 = ({ nextStep, prevStep, handleChange, values }) => {
     );
 };
 
-const Step7 = ({ nextStep, prevStep, handleChange, values }) => {
-    const [certifications, setCertifications] = React.useState(values.certifications.length > 0 ? values.certifications : [{ name: "", date: "" }]);
+const Step7 = ({ nextStep, prevStep, values, setValues }) => {
+    const [certifications, setCertifications] = React.useState(values.certifications);
+
+    const handleChange = (index, field) => (event) => {
+        const newCertifications = [...certifications];
+        newCertifications[index][field] = event.target.value;
+        setCertifications(newCertifications);
+        setValues({ ...values, certifications: newCertifications });
+    };
 
     const handleAddCertification = () => {
         setCertifications(prevCertifications => [
             ...prevCertifications,
-            { name: "", date: "" }
+            { name: "", issuing_organization: "", date: "" }
         ]);
     };
 
@@ -194,13 +245,17 @@ const Step7 = ({ nextStep, prevStep, handleChange, values }) => {
 
             {certifications.map((cert, index) => (
                 <div key={index} className="flex flex-wrap bg-gray-50">
-                    <div className="w-1/2 p-2">
+                    <div className="w-1/3 p-2">
                         <label className="block">Certificacion</label>
-                        <input type="text" name={`certification-${index}`} onChange={handleChange} value={cert.name} className="w-full p-2 border rounded-md" />
+                        <input type="text" name={`certification-${index}`} onChange={handleChange(index, 'name')} value={cert.name} className="w-full p-2 border rounded-md" />
                     </div>
-                    <div className="w-1/2 p-2">
+                    <div className="w-1/3 p-2">
+                        <label className="block">Organización Emisora</label>
+                        <input type="text" name={`issuing_organization-${index}`} onChange={handleChange(index, 'issuing_organization')} value={cert.issuing_organization} className="w-full p-2 border rounded-md" />
+                    </div>
+                    <div className="w-1/3 p-2">
                         <label className="block">Fecha de obtencion</label>
-                        <input type="date" name={`date-${index}`} onChange={handleChange} value={cert.date} className="w-full p-2 border rounded-md" />
+                        <input type="date" name={`date-${index}`} onChange={handleChange(index, 'date')} value={cert.date} className="w-full p-2 border rounded-md" />
                     </div>
                 </div>
             ))}
@@ -213,14 +268,21 @@ const Step7 = ({ nextStep, prevStep, handleChange, values }) => {
     );
 };
 
-const Step8 = ({ nextStep, prevStep, handleChange, values }) => {
-    const [softSkills, setSoftSkills] = React.useState(values.soft_skills.length > 0 ? values.soft_skills : [""]);
+const Step8 = ({ nextStep, prevStep, values, setValues }) => {
+    const [softSkills, setSoftSkills] = React.useState(values.soft_skills || {});
+
+    const handleChange = (index) => (event) => {
+        const newSoftSkills = { ...softSkills };
+        newSoftSkills[`skill${index + 1}`] = event.target.value;
+        setSoftSkills(newSoftSkills);
+        setValues({ ...values, soft_skills: newSoftSkills });
+    };
 
     const handleAddSoftSkill = () => {
-        setSoftSkills(prevSoftSkills => [
+        setSoftSkills(prevSoftSkills => ({
             ...prevSoftSkills,
-            ""
-        ]);
+            [`skill${Object.keys(prevSoftSkills).length + 1}`]: ""
+        }));
     };
 
     return (
@@ -228,11 +290,11 @@ const Step8 = ({ nextStep, prevStep, handleChange, values }) => {
             <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
             <h2 className="text-lg font-bold mb-4">¿Con cuales habilidades blandas cuentas?</h2>
 
-            {softSkills.map((skill, index) => (
+            {Object.keys(softSkills).map((skillKey, index) => (
                 <div key={index} className="flex flex-wrap bg-gray-50">
                     <div className="w-full p-2">
                         <label className="block">Habilidad blanda</label>
-                        <input type="text" name={`soft_skill-${index}`} onChange={handleChange} value={skill} className="w-full p-2 border rounded-md" />
+                        <input type="text" name={`soft_skill-${index}`} onChange={handleChange(index)} value={softSkills[skillKey]} className="w-full p-2 border rounded-md" />
                     </div>
                 </div>
             ))}
@@ -278,30 +340,26 @@ const MultiStepForm = () => {
     const nextStep = () => setStep(step + 1);
     const prevStep = () => setStep(step - 1);
 
-    const handleChange = (name, value) => {
-        setValues({ ...values, [name]: value });
-        console.log(values);
-    };
-
     switch (step) {
         case 1:
-            return <Step1 nextStep={nextStep} handleChange={handleChange} values={values} />;
+            return <Step1 nextStep={nextStep} setValues={setValues} values={values} />;
         case 2:
-            return <Step2 nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} values={values} />;
+            return <Step2 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
         case 3:
-            return <Step3 nextStep={nextStep} prevStep={prevStep} handleChange={handleChange2} values={values} />;
+            return <Step3 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
         case 4:
-            return <Step4 nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} values={values} />;
+            return <Step4 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
         case 5:
-            return <Step5 nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} values={values} />;
+            return <Step5 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
         case 6:
-            return <Step6 nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} values={values} />;
+            return <Step6 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
         case 7:
-            return <Step7 nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} values={values} />;
+            return <Step7 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
         case 8:
-            return <Step8 nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} values={values} />;
+            return <Step8 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
         case 9:
-            return <Step9 nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} values={values} />;
+            console.log(values);
+            return <Step9 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
         case 10:
             console.log(values);
     }
