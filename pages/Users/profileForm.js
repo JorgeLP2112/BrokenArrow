@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
 import { CldUploadWidget } from 'next-cloudinary';
+import { useRouter } from "next/router";
 
 const Step1 = ({ nextStep, values, setValues }) => {
     const handleChange = (event) => {
@@ -416,15 +417,22 @@ const Step12 = ({ values, id }) => {
 };
 
 const MultiStepForm = () => {
+    let router;
+    if (typeof window !== 'undefined') { // Verifica si estamos en el lado del cliente
+        const { useRouter } = require('next/router');
+        router = useRouter();
+    }
 
     const { data: session } = useSession();
     const id = session && session.user ? session.user.id : null;
 
-    if (!session) {
-        router.push('../');
-    } else if (session.user.isNewUser === false) {
-        router.push(`/Users/`);
-    }
+    useEffect(() => {
+        if (!session) {
+            router && router.push('../');
+        } else if (session.user.isNewUser === false) {
+            router && router.push(`/Users/`);
+        }
+    }, [session]);
 
     const [step, setStep] = useState(1);
     const [values, setValues] = useState({

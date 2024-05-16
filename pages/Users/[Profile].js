@@ -48,35 +48,37 @@ const Home = () => {
 
     if (isLoading) {
         return <BaseLayout><div>Loading...</div></BaseLayout>; // O cualquier otro componente de carga
-    }
+    } else {
 
-    return <BaseLayout>
 
-        <div className="bg-gray-100 p-4">
 
-            <div className="border-1 shadow-lg shadow-gray-700 rounded-lg">
+        return <BaseLayout>
 
-                <div className="flex rounded-t-lg bg-top-color sm:px-2 w-full">
-                    <div className="h-40 w-40 overflow-hidden sm:rounded-full sm:relative sm:p-0 top-10 left-5 p-3">
-                        <CldImage width="600" height="600" src={user.profilePicture} />
+            <div className="bg-gray-100 p-4">
+
+                <div className="border-1 shadow-lg shadow-gray-700 rounded-lg">
+
+                    <div className="flex rounded-t-lg bg-top-color sm:px-2 w-full">
+                        <div className="h-40 w-40 overflow-hidden sm:rounded-full sm:relative sm:p-0 top-10 left-5 p-3">
+                            <CldImage width="600" height="600" src={user.profilePicture} />
+                        </div>
+
+                        <div className="w-2/3 sm:text-center pl-5 mt-10 text-start">
+                            <p className="font-poppins font-bold text-heading sm:text-4xl text-2xl">
+                                {user.name + " " + user.lastname}
+                            </p>
+                            <p className="text-heading">{user.education.degree}</p>
+                        </div>
+
                     </div>
 
-                    <div className="w-2/3 sm:text-center pl-5 mt-10 text-start">
-                        <p className="font-poppins font-bold text-heading sm:text-4xl text-2xl">
-                            {user.name + " " + user.lastname}
-                        </p>
-                        <p className="text-heading">{user.education.degree}</p>
-                    </div>
+                    <div className="p-5">
 
-                </div>
+                        <div className="flex flex-col sm:flex-row sm:mt-10">
 
-                <div className="p-5">
+                            <div className="flex flex-col sm:w-1/3">
 
-                    <div className="flex flex-col sm:flex-row sm:mt-10">
-
-                        <div className="flex flex-col sm:w-1/3">
-
-                            {/*
+                                {/*
                             <div className="py-3 sm:order-none order-3">
                                 <h2 className="text-lg font-poppins font-bold text-top-color">My Contact</h2>
                                 <div className="border-2 w-20 border-top-color my-3"></div>
@@ -107,85 +109,86 @@ const Home = () => {
                             </div>
                             */}
 
-                            <div className="py-3 sm:order-none order-2">
-                                <h2 className="text-lg font-poppins font-bold text-top-color">Skills</h2>
-                                <div className="border-2 w-20 border-top-color my-3"></div>
+                                <div className="py-3 sm:order-none order-2">
+                                    <h2 className="text-lg font-poppins font-bold text-top-color">Skills</h2>
+                                    <div className="border-2 w-20 border-top-color my-3"></div>
 
-                                <div>
-                                    {user.skills.map((data, index) => (
-                                        <div className="flex items-center my-1" key={index}>
-                                            <div className="ml-2 text-gray-700 hover:text-orange-600">
-                                                <p>{data}</p>
+                                    <div>
+                                        {user.skills.map((data, index) => (
+                                            <div className="flex items-center my-1" key={index}>
+                                                <div className="ml-2 text-gray-700 hover:text-orange-600">
+                                                    <p>{data}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                            </div>
-                            <div className="py-3 sm:order-none order-1">
-                                <h2 className="text-lg font-poppins font-bold text-top-color">Educacion</h2>
-                                <div className="border-2 w-20 border-top-color my-3"></div>
-
-                                <div className="flex flex-col space-y-1">
-
-                                    {user.education.map((data, index) => (
-                                        <div className="flex flex-col" key={index}>
-                                            <p className="font-semibold text-xs text-gray-700">{data.period}</p>
-                                            <p className="text-sm font-medium">
-                                                <span className="text-green-700">{data.school}. </span>
-                                                {data.degree}
-                                            </p>
-                                        </div>
-                                    ))}
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="flex flex-col sm:w-2/3 order-first sm:order-none sm:-mt-10">
-
-                            <div className="py-3">
-                                <h2 className="text-lg font-poppins font-bold text-top-color">Sobre mi</h2>
-                                <div className="border-2 w-20 border-top-color my-3"></div>
-                                <p>{user.about}</p>
-                            </div>
-
-                            <div className="py-3">
-                                <h2 className="text-lg font-poppins font-bold text-top-color">Experiencia profesional</h2>
-                                <div className="border-2 w-20 border-top-color my-3"></div>
-                                <div className="flex flex-col">
-
-                                    {user.work_experience.map((experience, index) => (
-                                        <div className="flex flex-col" key={index}>
-                                            <h2 className="text-lg font-bold text-gray-700">{experience.company}</h2>
-                                            <p className="font-semibold text-sm text-gray-700">{experience.period}</p>
-                                            <h3 className="font-semibold text-sm text-gray-700 mt-2 mb-1">{experience.position}</h3>
-                                            <p className="text-sm list-disc pl-4 space-y-1">{experience.description}</p>
-                                        </div>
-                                    ))}
-
-                                </div>
-                            </div>
-
-                            <div className="py-3">
-                                <h2 className="text-lg font-poppins font-bold text-top-color">Projectos</h2>
-                                <div className="border-2 w-20 border-top-color my-3"></div>
-
-                                <div className="flex flex-col">
-
-                                    <div className="flex flex-col">
-                                        <p className="text-lg font-semibold text-gray-700">Projecto_1</p>
-                                        <p className="font-normal text-sm text-gray-700 mb-1 pl-2">Descripcion</p>
+                                        ))}
                                     </div>
 
+                                </div>
+                                <div className="py-3 sm:order-none order-1">
+                                    <h2 className="text-lg font-poppins font-bold text-top-color">Educacion</h2>
+                                    <div className="border-2 w-20 border-top-color my-3"></div>
+
+                                    <div className="flex flex-col space-y-1">
+
+                                        {user.education.map((data, index) => (
+                                            <div className="flex flex-col" key={index}>
+                                                <p className="font-semibold text-xs text-gray-700">{data.period}</p>
+                                                <p className="text-sm font-medium">
+                                                    <span className="text-green-700">{data.school}. </span>
+                                                    {data.degree}
+                                                </p>
+                                            </div>
+                                        ))}
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col sm:w-2/3 order-first sm:order-none sm:-mt-10">
+
+                                <div className="py-3">
+                                    <h2 className="text-lg font-poppins font-bold text-top-color">Sobre mi</h2>
+                                    <div className="border-2 w-20 border-top-color my-3"></div>
+                                    <p>{user.about}</p>
+                                </div>
+
+                                <div className="py-3">
+                                    <h2 className="text-lg font-poppins font-bold text-top-color">Experiencia profesional</h2>
+                                    <div className="border-2 w-20 border-top-color my-3"></div>
+                                    <div className="flex flex-col">
+
+                                        {user.work_experience.map((experience, index) => (
+                                            <div className="flex flex-col" key={index}>
+                                                <h2 className="text-lg font-bold text-gray-700">{experience.company}</h2>
+                                                <p className="font-semibold text-sm text-gray-700">{experience.period}</p>
+                                                <h3 className="font-semibold text-sm text-gray-700 mt-2 mb-1">{experience.position}</h3>
+                                                <p className="text-sm list-disc pl-4 space-y-1">{experience.description}</p>
+                                            </div>
+                                        ))}
+
+                                    </div>
+                                </div>
+
+                                <div className="py-3">
+                                    <h2 className="text-lg font-poppins font-bold text-top-color">Projectos</h2>
+                                    <div className="border-2 w-20 border-top-color my-3"></div>
+
+                                    <div className="flex flex-col">
+
+                                        <div className="flex flex-col">
+                                            <p className="text-lg font-semibold text-gray-700">Projecto_1</p>
+                                            <p className="font-normal text-sm text-gray-700 mb-1 pl-2">Descripcion</p>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </BaseLayout>
+        </BaseLayout>
+    }
 }
 
 export default Home;
