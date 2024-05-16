@@ -1,9 +1,25 @@
 import React, { useState } from 'react';
 import { useSession } from "next-auth/react";
-
-
+import { CldUploadWidget } from 'next-cloudinary';
 
 const Step1 = ({ nextStep, values, setValues }) => {
+    const handleChange = (event) => {
+        setValues({ ...values, [event.target.name]: event.target.value });
+    };
+
+    return (
+        <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
+            <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
+            <label className="block">¿Cual es tu nombre?</label>
+            <input type='text' name="name" onChange={handleChange} value={values.name} placeholder='Nombre' className="w-full mb-4 p-2 border rounded-md"></input>
+            <input type='text' name="lastname" onChange={handleChange} value={values.lastname} placeholder='Apellidos' className="w-full mb-4 p-2 border rounded-md"></input>
+
+            <button onClick={nextStep} className="px-4 py-2 bg-blue-500 text-white rounded-md">Siguiente</button>
+        </div>
+    );
+};
+
+const Step2 = ({ nextStep, prevStep, values, setValues }) => {
     const handleChange = (event) => {
         setValues({ ...values, [event.target.name]: event.target.value });
     };
@@ -18,7 +34,7 @@ const Step1 = ({ nextStep, values, setValues }) => {
     );
 };
 
-const Step2 = ({ nextStep, prevStep, values, setValues }) => {
+const Step3 = ({ nextStep, prevStep, values, setValues }) => {
     const handleChange = (event) => {
         setValues({
             ...values,
@@ -45,7 +61,7 @@ const Step2 = ({ nextStep, prevStep, values, setValues }) => {
     );
 };
 
-const Step3 = ({ nextStep, prevStep, values, setValues }) => {
+const Step4 = ({ nextStep, prevStep, values, setValues }) => {
     const [workExperience, setWorkExperience] = React.useState(values.work_experience);
 
     const handleChange = (index, field) => (event) => {
@@ -97,7 +113,7 @@ const Step3 = ({ nextStep, prevStep, values, setValues }) => {
     );
 };
 
-const Step4 = ({ nextStep, prevStep, values, setValues }) => {
+const Step5 = ({ nextStep, prevStep, values, setValues }) => {
     const [projects, setProjects] = React.useState(values.projects);
 
     const handleChange = (index, field) => (event) => {
@@ -138,7 +154,7 @@ const Step4 = ({ nextStep, prevStep, values, setValues }) => {
     );
 };
 
-const Step5 = ({ nextStep, prevStep, values, setValues }) => {
+const Step6 = ({ nextStep, prevStep, values, setValues }) => {
     const [skills, setSkills] = React.useState(values.skills || []);
 
     const handleChange = (index) => (event) => {
@@ -173,7 +189,7 @@ const Step5 = ({ nextStep, prevStep, values, setValues }) => {
     );
 };
 
-const Step6 = ({ nextStep, prevStep, values, setValues }) => {
+const Step7 = ({ nextStep, prevStep, values, setValues }) => {
     const [languages, setLanguages] = React.useState(values.languages);
 
     const handleChange = (index, field) => (event) => {
@@ -224,7 +240,7 @@ const Step6 = ({ nextStep, prevStep, values, setValues }) => {
     );
 };
 
-const Step7 = ({ nextStep, prevStep, values, setValues }) => {
+const Step8 = ({ nextStep, prevStep, values, setValues }) => {
     const [certifications, setCertifications] = React.useState(values.certifications);
 
     const handleChange = (index, field) => (event) => {
@@ -271,7 +287,7 @@ const Step7 = ({ nextStep, prevStep, values, setValues }) => {
     );
 };
 
-const Step8 = ({ nextStep, prevStep, values, setValues }) => {
+const Step9 = ({ nextStep, prevStep, values, setValues }) => {
     const [softSkills, setSoftSkills] = React.useState(values.soft_skills || []);
 
     const handleChange = (index) => (event) => {
@@ -307,7 +323,7 @@ const Step8 = ({ nextStep, prevStep, values, setValues }) => {
     );
 };
 
-const Step9 = ({ nextStep, prevStep, values, setValues }) => {
+const Step10 = ({ nextStep, prevStep, values, setValues }) => {
     const handleChange = (event) => {
         setValues({ ...values, [event.target.name]: event.target.value });
     };
@@ -316,16 +332,44 @@ const Step9 = ({ nextStep, prevStep, values, setValues }) => {
         <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
             <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
             <label className="block">¿Cual es tu meta profesional?</label>
-            <textarea name="professionalGoal" onChange={handleChange} value={values.career_goals} className="w-full mb-4 p-2 border rounded-md"></textarea>
+            <textarea name="career_goals" onChange={handleChange} value={values.career_goals} className="w-full mb-4 p-2 border rounded-md"></textarea>
             <button onClick={prevStep} className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2">Anterior</button>
             <button onClick={nextStep} className="px-4 py-2 bg-blue-500 text-white rounded-md">Siguiente</button>
         </div>
     )
 };
 
-const Step10 = ({ values }) => {
-    const { data: session } = useSession();
-    const id = session.user.id;
+const Step11 = ({ nextStep, prevStep, values, setValues }) => {
+
+    return (
+        <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
+            <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
+            <label className="block">Agrega una imagen de perfil</label>
+
+
+            <CldUploadWidget uploadPreset="ml_default"
+                onSuccess={(results) => {
+                    console.log('Public ID', results.info.public_id);
+                    setValues({ ...values, profilePicture: results.info.public_id });
+                }}
+            >
+                {({ open }) => {
+                    return (
+                        <button onClick={() => open()}>
+                            Sube una imagen
+                        </button>
+                    );
+                }}
+            </CldUploadWidget>
+
+            <button onClick={prevStep} className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2">Anterior</button>
+            <button onClick={nextStep} className="px-4 py-2 bg-blue-500 text-white rounded-md">Siguiente</button>
+        </div>
+    )
+};
+
+const Step12 = ({ values, id }) => {
+
     console.log(values);
     const handleSave = async () => {
         const response = await fetch('/api/Users/' + id, {
@@ -337,9 +381,28 @@ const Step10 = ({ values }) => {
         });
 
         if (response.ok) {
-            alert('Información guardada con éxito');
+            Swal.fire({
+                icon: "success",
+                title: "¡Completado!",
+                text: "Información guardada con éxito",
+                background: "#fff",
+                customClass: {
+                    title: "black-font",
+                },
+                didClose: () => {
+                    router.push(`/Users/`);
+                },
+            });
         } else {
-            alert('Hubo un error al guardar la información');
+            Swal.fire({
+                icon: "error",
+                title: "¡Error!",
+                text: "Hubo un error al guardar la información",
+                background: "#fff",
+                customClass: {
+                    title: "black-font",
+                },
+            });
         }
     };
 
@@ -353,8 +416,20 @@ const Step10 = ({ values }) => {
 };
 
 const MultiStepForm = () => {
+
+    const { data: session } = useSession();
+    const id = session && session.user ? session.user.id : null;
+
+    if (!session) {
+        router.push('../');
+    } else if (session.user.isNewUser === false) {
+        router.push(`/Users/`);
+    }
+
     const [step, setStep] = useState(1);
     const [values, setValues] = useState({
+        name: "",
+        lastname: "",
         about: "",
         education: {
             degree: "",
@@ -368,6 +443,7 @@ const MultiStepForm = () => {
         certifications: [],
         soft_skills: [],
         career_goals: "",
+        profilePicture: ""
     });
 
     const nextStep = () => setStep(step + 1);
@@ -393,11 +469,16 @@ const MultiStepForm = () => {
         case 9:
             return <Step9 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
         case 10:
-            return <Step10 values={values} />;
+            return <Step10 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
+        case 11:
+            return <Step11 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
+        case 12:
+            return <Step12 values={values} id={id} />;
     }
 };
 
 const App = () => (
+
     <div className="bg-gray-200 min-h-screen flex items-center justify-center">
         <MultiStepForm />
     </div>

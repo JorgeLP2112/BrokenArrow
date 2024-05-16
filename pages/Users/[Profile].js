@@ -3,6 +3,7 @@ import BaseLayout from "@/components/BaseLayout";
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from "next/router";
+import { CldImage } from 'next-cloudinary';
 
 const Home = () => {
     const { data: session, status } = useSession();
@@ -14,15 +15,15 @@ const Home = () => {
 
     useEffect(() => {
         if (loading) return;
+
         if (!session) {
             router.push('../');
         } else if (session.user.isNewUser === true) {
-            console.log(session.user.isNewUser);
             router.push(`/Users/profileForm`);
         } else {
-            console.log(session.user.isNewUser);
-            //fetchUser();
+            fetchUser();
         }
+
     }, [session, router, loading]);
 
     const fetchUser = useCallback(async () => {
@@ -48,7 +49,7 @@ const Home = () => {
     if (isLoading) {
         return <BaseLayout><div>Loading...</div></BaseLayout>; // O cualquier otro componente de carga
     }
-/*
+
     return <BaseLayout>
 
         <div className="bg-gray-100 p-4">
@@ -57,14 +58,14 @@ const Home = () => {
 
                 <div className="flex rounded-t-lg bg-top-color sm:px-2 w-full">
                     <div className="h-40 w-40 overflow-hidden sm:rounded-full sm:relative sm:p-0 top-10 left-5 p-3">
-                        <img src={user[0].image} alt="Profile Illustration" />
+                        <CldImage width="600" height="600" src={user.profilePicture} />
                     </div>
 
                     <div className="w-2/3 sm:text-center pl-5 mt-10 text-start">
                         <p className="font-poppins font-bold text-heading sm:text-4xl text-2xl">
-                            {user[0].name}
+                            {user.name + " " + user.lastname}
                         </p>
-                        <p className="text-heading">{user[0].profile.career}</p>
+                        <p className="text-heading">{user.education.degree}</p>
                     </div>
 
                 </div>
@@ -105,13 +106,13 @@ const Home = () => {
                                 </div>
                             </div>
                             */}
-/*
+
                             <div className="py-3 sm:order-none order-2">
                                 <h2 className="text-lg font-poppins font-bold text-top-color">Skills</h2>
                                 <div className="border-2 w-20 border-top-color my-3"></div>
 
                                 <div>
-                                    {user[0].profile?.skills?.map((data, index) => (
+                                    {user.skills.map((data, index) => (
                                         <div className="flex items-center my-1" key={index}>
                                             <div className="ml-2 text-gray-700 hover:text-orange-600">
                                                 <p>{data}</p>
@@ -127,7 +128,7 @@ const Home = () => {
 
                                 <div className="flex flex-col space-y-1">
 
-                                    {user[0].profile.education.map((data, index) => (
+                                    {user.education.map((data, index) => (
                                         <div className="flex flex-col" key={index}>
                                             <p className="font-semibold text-xs text-gray-700">{data.period}</p>
                                             <p className="text-sm font-medium">
@@ -146,7 +147,7 @@ const Home = () => {
                             <div className="py-3">
                                 <h2 className="text-lg font-poppins font-bold text-top-color">Sobre mi</h2>
                                 <div className="border-2 w-20 border-top-color my-3"></div>
-                                <p>{user[0].profile.about}</p>
+                                <p>{user.about}</p>
                             </div>
 
                             <div className="py-3">
@@ -154,16 +155,14 @@ const Home = () => {
                                 <div className="border-2 w-20 border-top-color my-3"></div>
                                 <div className="flex flex-col">
 
-                                    <div className="flex flex-col">
-                                        <p className="text-lg font-bold text-gray-700">Lugar</p>
-                                        <p className="font-semibold text-sm text-gray-700">Periodo</p>
-                                        <p className="font-semibold text-sm text-gray-700 mt-2 mb-1">Trabajo realizado:</p>
-                                        <ul className="text-sm list-disc pl-4 space-y-1">
-                                            <li>Working on customer facing product</li>
-                                            <li>Deliverying highly efficient solutions</li>
-                                            <li>Solving critical bugs</li>
-                                        </ul>
-                                    </div>
+                                    {user.work_experience.map((experience, index) => (
+                                        <div className="flex flex-col" key={index}>
+                                            <h2 className="text-lg font-bold text-gray-700">{experience.company}</h2>
+                                            <p className="font-semibold text-sm text-gray-700">{experience.period}</p>
+                                            <h3 className="font-semibold text-sm text-gray-700 mt-2 mb-1">{experience.position}</h3>
+                                            <p className="text-sm list-disc pl-4 space-y-1">{experience.description}</p>
+                                        </div>
+                                    ))}
 
                                 </div>
                             </div>
@@ -187,6 +186,6 @@ const Home = () => {
             </div>
         </div>
     </BaseLayout>
-}*/
+}
 
 export default Home;

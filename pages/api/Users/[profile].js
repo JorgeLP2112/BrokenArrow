@@ -12,12 +12,46 @@ async function getUsers(req, res) {
         const database = client.db('test');
 
         const user = await database
-            .collection("users")
-            .find({ _id: new ObjectId(id) }, { projection: { name: 1, email: 1, profile: 1, image: 1 } })
+            .collection("profiles")
+            .find({ id: id })
             .toArray();
         console.log(user)
         res.json(user);
 
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while connecting to the database' });
+    } finally {
+        await client.close();
+    }
+}
+
+async function newUser(req, res) {
+    const idUser = req.query.profile;
+
+    const { about, name, lastname, education, work_experience, skills, projects,
+        languages, certifications, soft_skills, career_goals, profilePicture
+    } = req.body;
+
+    try {
+        await client.connect();
+        const database = client.db('test');
+        const result = await database.collection("profiles").insertOne({ idUser, name, lastname, about, education, work_experience, skills, projects, languages, certifications, soft_skills, career_goals, profilePicture });
+        if (result.acknowledged && result.insertedId) {
+            const updateResult = await database.collection("users").updateOne({ _id: idUser }, { $set: { isNewUser: false } });
+            req.session.user.isNewUser = false;
+
+            if (updateResult.acknowledged && updateResult.modifiedCount === 1) {
+                res.json({ message: 'User added successfully and isNewUser updated' });
+                console.log('User added successfully and isNewUser updated');
+            } else {
+                res.status(500).json({ error: 'An error occurred while updating the user in the database' });
+                console.log('An error occurred while updating the user in the database');
+            }
+        } else {
+            res.status(500).json({ error: 'An error occurred while inserting the user into the database' });
+            console.log('An error occurred while inserting the user into the database');
+        }
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'An error occurred while connecting to the database' });
@@ -79,8 +113,7 @@ export default async function handler(req, res) {
         return getUsers(req, res);
     } else if (req.method === 'POST') {
         return newUser(req, res);
-    }else
-        // Si el método no es GET, DELETE, o PUT, retornamos un error
+    } else {
         res.status(405).end(); // Method Not Allowed
     }
 }
