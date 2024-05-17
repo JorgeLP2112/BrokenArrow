@@ -417,22 +417,8 @@ const Step12 = ({ values, id }) => {
 };
 
 const MultiStepForm = () => {
-    let router;
-    if (typeof window !== 'undefined') { // Verifica si estamos en el lado del cliente
-        const { useRouter } = require('next/router');
-        router = useRouter();
-    }
-
     const { data: session } = useSession();
     const id = session && session.user ? session.user.id : null;
-
-    useEffect(() => {
-        if (!session) {
-            router && router.push('../');
-        } else if (session.user.isNewUser === false) {
-            router && router.push(`/Users/`);
-        }
-    }, [session]);
 
     const [step, setStep] = useState(1);
     const [values, setValues] = useState({
@@ -485,11 +471,23 @@ const MultiStepForm = () => {
     }
 };
 
-const App = () => (
+const App = () => {
+    const [session, loading] = useSession();
+    const router = useRouter();
 
-    <div className="bg-gray-200 min-h-screen flex items-center justify-center">
-        <MultiStepForm />
-    </div>
-);
+    useEffect(() => {
+        if (!loading && !session) {
+            router.push('../');
+        } else if (!loading && session && !session.user.isNewUser) {
+            router.push(`/Users/`);
+        }
+    }, [session, loading, router]);
+
+    return (
+        <div className="bg-gray-200 min-h-screen flex items-center justify-center">
+            <MultiStepForm />
+        </div>
+    );
+};
 
 export default App;

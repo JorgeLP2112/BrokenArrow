@@ -50,8 +50,6 @@ const Home = () => {
         return <BaseLayout><div>Loading...</div></BaseLayout>; // O cualquier otro componente de carga
     } else {
 
-
-
         return <BaseLayout>
 
             <div className="bg-gray-100 p-4">
@@ -60,14 +58,14 @@ const Home = () => {
 
                     <div className="flex rounded-t-lg bg-top-color sm:px-2 w-full">
                         <div className="h-40 w-40 overflow-hidden sm:rounded-full sm:relative sm:p-0 top-10 left-5 p-3">
-                            <CldImage width="600" height="600" src={user.profilePicture} />
+                            <CldImage width="600" height="600" src={user?.profilePicture} />
                         </div>
 
                         <div className="w-2/3 sm:text-center pl-5 mt-10 text-start">
                             <p className="font-poppins font-bold text-heading sm:text-4xl text-2xl">
-                                {user.name + " " + user.lastname}
+                                {user?.name + " " + user?.lastname}
                             </p>
-                            <p className="text-heading">{user.education.degree}</p>
+                            <p className="text-heading">{user?.education?.degree}</p>
                         </div>
 
                     </div>
@@ -114,7 +112,7 @@ const Home = () => {
                                     <div className="border-2 w-20 border-top-color my-3"></div>
 
                                     <div>
-                                        {user.skills.map((data, index) => (
+                                        {user?.skills?.map((data, index) => (
                                             <div className="flex items-center my-1" key={index}>
                                                 <div className="ml-2 text-gray-700 hover:text-orange-600">
                                                     <p>{data}</p>
@@ -130,7 +128,7 @@ const Home = () => {
 
                                     <div className="flex flex-col space-y-1">
 
-                                        {user.education.map((data, index) => (
+                                        {user?.education?.map((data, index) => (
                                             <div className="flex flex-col" key={index}>
                                                 <p className="font-semibold text-xs text-gray-700">{data.period}</p>
                                                 <p className="text-sm font-medium">
@@ -149,7 +147,7 @@ const Home = () => {
                                 <div className="py-3">
                                     <h2 className="text-lg font-poppins font-bold text-top-color">Sobre mi</h2>
                                     <div className="border-2 w-20 border-top-color my-3"></div>
-                                    <p>{user.about}</p>
+                                    <p>{user?.about}</p>
                                 </div>
 
                                 <div className="py-3">
@@ -157,7 +155,7 @@ const Home = () => {
                                     <div className="border-2 w-20 border-top-color my-3"></div>
                                     <div className="flex flex-col">
 
-                                        {user.work_experience.map((experience, index) => (
+                                        {user?.work_experience?.map((experience, index) => (
                                             <div className="flex flex-col" key={index}>
                                                 <h2 className="text-lg font-bold text-gray-700">{experience.company}</h2>
                                                 <p className="font-semibold text-sm text-gray-700">{experience.period}</p>
