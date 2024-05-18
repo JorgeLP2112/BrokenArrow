@@ -6,18 +6,12 @@ const client = new MongoClient(uri);
 async function getUsers(req, res) {
     try {
         const id = req.query.profile;
-
         await client.connect();
-
         const database = client.db('test');
-
         const user = await database
             .collection("profiles")
-            .find({ id: id })
-            .toArray();
-        console.log(user)
+            .findOne({ idUser: id });
         res.json(user);
-
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'An error occurred while connecting to the database' });
@@ -27,7 +21,7 @@ async function getUsers(req, res) {
 }
 
 async function newUser(req, res) {
-    const idUser = req.query.profile;
+    const { query: { idUser } } = req;
 
     const { about, name, lastname, education, work_experience, skills, projects,
         languages, certifications, soft_skills, career_goals, profilePicture
@@ -38,7 +32,9 @@ async function newUser(req, res) {
         const database = client.db('test');
         const result = await database.collection("profiles").insertOne({ idUser, name, lastname, about, education, work_experience, skills, projects, languages, certifications, soft_skills, career_goals, profilePicture });
         if (result.acknowledged && result.insertedId) {
-            const updateResult = await database.collection("users").updateOne({ _id: idUser }, { $set: { isNewUser: false } });
+            const id = new ObjectId(idUser);
+
+            const updateResult = await database.collection("users").updateOne({ _id: id }, { $set: { isNewUser: false } });
             req.session.user.isNewUser = false;
 
             if (updateResult.acknowledged && updateResult.modifiedCount === 1) {

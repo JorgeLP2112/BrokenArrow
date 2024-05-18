@@ -1,55 +1,46 @@
-//import Link from "next/link";
 import BaseLayout from "@/components/BaseLayout";
 import { useSession } from "next-auth/react";
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from "next/router";
 import { CldImage } from 'next-cloudinary';
 
 const Home = () => {
     const { data: session, status } = useSession();
     const router = useRouter();
-    const loading = status === 'loading';
-    const [user, setUser] = useState([]);
-    const id = router.query.Profile;
-    const [isLoading, setIsLoading] = useState(false); // Nuevo estado
+    const [user, setUser] = useState();
+    const isLoading = status === 'loading' || !user;
 
     useEffect(() => {
-        if (loading) return;
+        if (status !== 'loading') {
+            if (!session) {
+                router.push('../');
+            } else if (session.user.isNewUser === true && session.user.roles[1] === "Estudiante") {
+                router.push('/Users/profileFormEstudiante');
+            } else if (session.user.isNewUser === true && session.user.roles[1] === "Empresa") {
+                router.push('/Users/profileFormEmpresa');
+            }
+        }
+    }, [session, router, status]);
 
-        if (!session) {
-            router.push('../');
-        } else if (session.user.isNewUser === true) {
-            router.push(`/Users/profileForm`);
-        } else {
+    useEffect(() => {
+        if (router.isReady) {
+            const fetchUser = async () => {
+                const response = await fetch(`/api/Users/${router.query.Profile}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(data);
+                    setUser(data);
+                } else {
+                    console.error('Failed to fetch user');
+                }
+            };
             fetchUser();
         }
-
-    }, [session, router, loading]);
-
-    const fetchUser = useCallback(async () => {
-        try {
-            const response = await fetch(`/api/Users/${id}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            if (!response.ok) {
-                throw new Error('Failed to fetch users');
-            }
-            const data = await response.json();
-            console.log(data);
-            setUser(data);
-            setIsLoading(false); // Termina la carga
-        } catch (error) {
-            console.error(error);
-        }
-    }, [id]);
+    }, [router.isReady, router.query.Profile]);
 
     if (isLoading) {
-        return <BaseLayout><div>Loading...</div></BaseLayout>; // O cualquier otro componente de carga
+        return <BaseLayout><div>Loading...</div></BaseLayout>;
     } else {
-
         return <BaseLayout>
 
             <div className="bg-gray-100 p-4">
@@ -128,15 +119,15 @@ const Home = () => {
 
                                     <div className="flex flex-col space-y-1">
 
-                                        {user?.education?.map((data, index) => (
-                                            <div className="flex flex-col" key={index}>
-                                                <p className="font-semibold text-xs text-gray-700">{data.period}</p>
-                                                <p className="text-sm font-medium">
-                                                    <span className="text-green-700">{data.school}. </span>
-                                                    {data.degree}
-                                                </p>
-                                            </div>
-                                        ))}
+                                        {/*user?.education.map((data, index) => ())*/}
+                                        <div className="flex flex-col" >
+                                            <p className="font-semibold text-xs text-gray-700">{user?.education.period}</p>
+                                            <p className="text-sm font-medium">
+                                                <span className="text-green-700">{user?.education.school}. </span>
+                                                {user?.education.degree}
+                                            </p>
+                                        </div>
+
 
                                     </div>
                                 </div>
