@@ -63,6 +63,7 @@ export const authOptions = {
           user.createdAt = dateNowUnix();
           user.updatedAt = dateNowUnix();
           user.isNewUser = true;
+          user.active = true;
         }
         user.lastLogin = dateNowUnix();
         // Save the updated user to the database
@@ -84,7 +85,6 @@ export const authOptions = {
       return token
     },
     async session({ session, token }) {
-      // console.log("session", session)
       try {
         const client = await clientPromise;
         const user = await client
