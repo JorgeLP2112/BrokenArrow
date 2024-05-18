@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
 import { CldUploadWidget } from 'next-cloudinary';
 import { useRouter } from "next/router";
+import Swal from 'sweetalert2';
 
 const Step1 = ({ nextStep, values, setValues }) => {
     const handleChange = (event) => {
@@ -30,6 +31,7 @@ const Step2 = ({ nextStep, prevStep, values, setValues }) => {
             <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
             <label className="block">Cuéntanos un poco sobre ti</label>
             <textarea name="about" onChange={handleChange} value={values.about} className="w-full mb-4 p-2 border rounded-md"></textarea>
+            <button onClick={prevStep} className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2">Anterior</button>
             <button onClick={nextStep} className="px-4 py-2 bg-blue-500 text-white rounded-md">Siguiente</button>
         </div>
     );
@@ -325,22 +327,6 @@ const Step9 = ({ nextStep, prevStep, values, setValues }) => {
 };
 
 const Step10 = ({ nextStep, prevStep, values, setValues }) => {
-    const handleChange = (event) => {
-        setValues({ ...values, [event.target.name]: event.target.value });
-    };
-
-    return (
-        <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
-            <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
-            <label className="block">¿Cual es tu meta profesional?</label>
-            <textarea name="career_goals" onChange={handleChange} value={values.career_goals} className="w-full mb-4 p-2 border rounded-md"></textarea>
-            <button onClick={prevStep} className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2">Anterior</button>
-            <button onClick={nextStep} className="px-4 py-2 bg-blue-500 text-white rounded-md">Siguiente</button>
-        </div>
-    )
-};
-
-const Step11 = ({ nextStep, prevStep, values, setValues }) => {
 
     return (
         <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
@@ -369,7 +355,7 @@ const Step11 = ({ nextStep, prevStep, values, setValues }) => {
     )
 };
 
-const Step12 = ({ values, id }) => {
+const Step11 = ({ values, id }) => {
 
     console.log(values);
     const handleSave = async () => {
@@ -436,7 +422,6 @@ const MultiStepForm = () => {
         languages: [],
         certifications: [],
         soft_skills: [],
-        career_goals: "",
         profilePicture: ""
     });
 
@@ -465,14 +450,12 @@ const MultiStepForm = () => {
         case 10:
             return <Step10 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
         case 11:
-            return <Step11 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
-        case 12:
-            return <Step12 values={values} id={id} />;
+            return <Step11 values={values} id={id} />;
     }
 };
 
 const App = () => {
-    const [session, loading] = useSession();
+    const { data: session, loading } = useSession();
     const router = useRouter();
 
     useEffect(() => {
