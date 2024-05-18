@@ -35,51 +35,51 @@ const Sidebar = () => {
                     <p className="sidebar__logo-name">JKB Jobs</p>
                 </div>
                 <ul className="sidebar__list">
-                    <li className="sidebar__item">
-                        <Link
-                            className={`sidebar__link ${router.pathname === "/" ? "sidebar__link--active" : ""
-                                }`}
-                            href="/"
-                        >
-                            <span className="sidebar__icon">
-                                <AiOutlineHome />
-                            </span>
-                            <span className="sidebar__name">Inicio</span>
-                        </Link>
-                    </li>
-
 
                     {session ? (
                         <>
+                            <li className="sidebar__item">
+                                <Link
+                                    className={`sidebar__link ${router.pathname === "/Publicaciones" ? "sidebar__link--active" : ""
+                                        }`}
+                                    href="/Publicaciones"
+                                >
+                                    <span className="sidebar__icon">
+                                        <AiOutlineHome />
+                                    </span>
+                                    <span className="sidebar__name">Publicaciones</span>
+                                </Link>
+                            </li>
+
                             {session.user.roles[0] === "Admin" ? (
                                 <>
                                     <li className="sidebar__item">
                                         <Link
-                                            className={`sidebar__link ${router.pathname === "/Admins/UsuariosActivos" ? "sidebar__link--active" : ""
+                                            className={`sidebar__link ${router.pathname === "/Admins/Usuarios" ? "sidebar__link--active" : ""
                                                 }`}
-                                            href="/Admins/UsuariosActivos"
+                                            href="/Admins/Usuarios"
                                         >
                                             <span className="sidebar__icon">
                                                 <FiMail />
                                             </span>
-                                            <span className="sidebar__name">Usuarios Activos</span>
+                                            <span className="sidebar__name">Usuarios</span>
+                                        </Link>
+                                    </li>
+                                    <li className="sidebar__item">
+                                        <Link
+                                            className={`sidebar__link ${router.pathname === "/Admins/Reportes" ? "sidebar__link--active" : ""
+                                                }`}
+                                            href="/Admins/Reportes"
+                                        >
+                                            <span className="sidebar__icon">
+                                                <FiMail />
+                                            </span>
+                                            <span className="sidebar__name">Reportes</span>
                                         </Link>
                                     </li>
                                 </>
                             ) : (
                                 <>
-                                    <li className="sidebar__item">
-                                        <Link
-                                            className={`sidebar__link ${router.pathname === "/Users" ? "sidebar__link--active" : ""
-                                                }`}
-                                            href="/Users/"
-                                        >
-                                            <span className="sidebar__icon">
-                                                <FiMail />
-                                            </span>
-                                            <span className="sidebar__name">Publicaciones</span>
-                                        </Link>
-                                    </li>
                                     <li className="sidebar__item">
                                         <Link
                                             className={`sidebar__link ${router.pathname === `/Users/${session.user.id}` ? `sidebar__link--active` : ""
