@@ -3,7 +3,7 @@ import { MongoClient, ObjectId } from "mongodb";
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 
-async function getUsers(req, res) {
+async function getUser(req, res) {
     try {
         const id = req.query.profile;
         await client.connect();
@@ -20,17 +20,38 @@ async function getUsers(req, res) {
     }
 }
 
+async function getUsers(req, res) {
+    try {
+        await client.connect(); // Connect to MongoDB before running operations
+        const database = client.db('test');
+        const userType = req.query.type;
+        const userName = req.query.name;
+        const query = {};
+        if (userType) query.type = { $eq: userType };
+        if (userName) query.name = { $regex: new RegExp(userName, "i") };
+        const users = await database
+            .collection("profiles")
+            .find(query).toArray();
+        res.json(users);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while connecting to the database' });
+    } finally {
+        await client.close();
+    }
+}
+
 async function newUser(req, res) {
     const { query: { idUser } } = req;
 
     const { about, name, lastname, education, work_experience, skills, projects,
-        languages, certifications, soft_skills, career_goals, profilePicture
+        languages, certifications, soft_skills, career_goals, profilePicture, type
     } = req.body;
 
     try {
         await client.connect();
         const database = client.db('test');
-        const result = await database.collection("profiles").insertOne({ idUser, name, lastname, about, education, work_experience, skills, projects, languages, certifications, soft_skills, career_goals, profilePicture });
+        const result = await database.collection("profiles").insertOne({ idUser, name, lastname, about, education, work_experience, skills, projects, languages, certifications, soft_skills, career_goals, profilePicture, type });
         if (result.acknowledged && result.insertedId) {
             const id = new ObjectId(idUser);
 
@@ -105,7 +126,9 @@ async function modifyUser(req, res) {
 }
 */
 export default async function handler(req, res) {
-    if (req.method === 'GET') {
+    if (req.method === 'GET' && req.query.profile !== undefined) {
+        return getUser(req, res);
+    } else if (req.method === 'GET' && req.query.profile === undefined) {
         return getUsers(req, res);
     } else if (req.method === 'POST') {
         return newUser(req, res);

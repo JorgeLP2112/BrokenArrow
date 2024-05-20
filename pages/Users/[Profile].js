@@ -25,7 +25,7 @@ const Home = () => {
     useEffect(() => {
         if (router.isReady) {
             const fetchUser = async () => {
-                const response = await fetch(`/api/Users/${router.query.Profile}`);
+                const response = await fetch(`/api/Users/profile?profile=${router.query.Profile}`);
                 if (response.ok) {
                     const data = await response.json();
                     console.log(data);
