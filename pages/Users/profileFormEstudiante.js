@@ -13,7 +13,7 @@ const Step1 = ({ nextStep, values, setValues }) => {
         <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
             <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
             <label className="block">¿Cual es tu nombre?</label>
-            <input type='text' name="name" onChange={handleChange} value={values.name} placeholder='Nombre' className="w-full mb-4 p-2 border rounded-md"></input>
+            <input type='text' name="name" onChange={handleChange} value={values.name} placeholder='Nombre/s' className="w-full mb-4 p-2 border rounded-md"></input>
             <input type='text' name="lastname" onChange={handleChange} value={values.lastname} placeholder='Apellidos' className="w-full mb-4 p-2 border rounded-md"></input>
 
             <button onClick={nextStep} className="px-4 py-2 bg-blue-500 text-white rounded-md">Siguiente</button>
@@ -51,7 +51,7 @@ const Step3 = ({ nextStep, prevStep, values, setValues }) => {
     return (
         <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
             <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
-            <h3 className="text-lg font-bold mb-4">Cuentanos sobre tu educacion universitaria</h3>
+            <h3 className="text-base font-bold mb-4">Cuéntanos sobre tu educación superior</h3>
             <label className="block">Carrera</label>
             <input type="text" name="degree" onChange={handleChange} value={values.education.degree} className="w-full mb-4 p-2 border rounded-md" />
             <label className="block">Institucion</label>
@@ -94,11 +94,11 @@ const Step4 = ({ nextStep, prevStep, values, setValues }) => {
                         <input type="text" name={`company-${index}`} onChange={handleChange(index, 'company')} value={work.company} className="w-full mb-4 p-2 border rounded-md" />
                     </div>
                     <div className="w-1/2 px-2">
-                        <label className="block">Periodo</label>
+                        <label className="block">Periodo de actividad</label>
                         <input type="text" name={`period-${index}`} onChange={handleChange(index, 'period')} value={work.period} className="w-full mb-4 p-2 border rounded-md" />
                     </div>
                     <div className="w-1/2 px-2">
-                        <label className="block">Posición</label>
+                        <label className="block">Puesto</label>
                         <input type="text" name={`position-${index}`} onChange={handleChange(index, 'position')} value={work.position} className="w-full mb-4 p-2 border rounded-md" />
                     </div>
                     <div className="w-1/2 px-2">
@@ -136,7 +136,7 @@ const Step5 = ({ nextStep, prevStep, values, setValues }) => {
     return (
         <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
             <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
-            <h2 className="text-lg font-bold mb-4">¿Que proyectos relevantes has realizado?</h2>
+            <h2 className="text-lg font-bold mb-4">¿Tienes algún proyecto que quieras compartir?</h2>
 
             {projects.map((project, index) => (
                 <div key={index} className="flex flex-wrap bg-gray-50">
@@ -174,7 +174,7 @@ const Step6 = ({ nextStep, prevStep, values, setValues }) => {
     return (
         <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
             <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
-            <h2 className="text-lg font-bold mb-4">¿Que habilidades tecnicas posees?</h2>
+            <h2 className="text-lg font-bold mb-4">¿Qué habilidades tecnicas posees?</h2>
 
             {Object.keys(skills).map((skillKey, index) => (
                 <div key={index} className="flex flex-wrap bg-gray-50">
@@ -212,7 +212,7 @@ const Step7 = ({ nextStep, prevStep, values, setValues }) => {
     return (
         <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
             <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
-            <h2 className="text-lg font-bold mb-4">¿Que idiomas manejas?</h2>
+            <h2 className="text-lg font-bold mb-4">¿Qué idiomas hablas?</h2>
 
             {languages.map((lang, index) => (
                 <div key={index} className="flex flex-wrap bg-gray-50">
@@ -230,6 +230,8 @@ const Step7 = ({ nextStep, prevStep, values, setValues }) => {
                             <option value="B1">B1: Intermedio</option>
                             <option value="B2">B2: Intermedio-Alto</option>
                             <option value="C1-C2">C1-C2: Avanzado</option>
+                            <option value="Nativo">Nativo</option>
+
                         </select>
                     </div>
                 </div>
@@ -307,12 +309,11 @@ const Step9 = ({ nextStep, prevStep, values, setValues }) => {
     return (
         <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
             <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
-            <h2 className="text-lg font-bold mb-4">¿Con cuales habilidades blandas cuentas?</h2>
+            <h2 className="text-lg font-bold mb-4">¿Con cuáles habilidades sociales (Soft Skills)?</h2>
 
             {softSkills.map((skill, index) => (
                 <div key={index} className="flex flex-wrap bg-gray-50">
                     <div className="w-full p-2">
-                        <label className="block">Habilidad blanda</label>
                         <input type="text" name={`soft_skill-${index}`} onChange={handleChange(index)} value={skill} className="w-full p-2 border rounded-md" />
                     </div>
                 </div>
