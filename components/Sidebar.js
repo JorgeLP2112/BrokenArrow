@@ -80,6 +80,26 @@ const Sidebar = () => {
                                 </>
                             ) : (
                                 <>
+                                    {session.user.roles[1] === "Estudiante" ? (
+                                        <>
+                                            <li className="sidebar__item">
+                                                <Link
+                                                    className={`sidebar__link ${router.pathname === "/Users/Comunidad" ? `sidebar__link--active` : ""
+                                                        }`}
+                                                    href="/Users/Comunidad"
+                                                >
+                                                    <span className="sidebar__icon">
+                                                        <FiMail />
+                                                    </span>
+                                                    <span className="sidebar__name">Comunidad</span>
+                                                </Link>
+                                            </li>
+                                        </>
+                                    ) : (
+                                        <>
+                                        </>
+                                    )}
+
                                     <li className="sidebar__item">
                                         <Link
                                             className={`sidebar__link ${router.pathname === `/Users/${session.user.id}` ? `sidebar__link--active` : ""
@@ -93,6 +113,7 @@ const Sidebar = () => {
                                         </Link>
                                     </li>
                                 </>
+
                             )}
                             <li className="sidebar__item__SignOut">
                                 <button className="sidebar__link" onClick={() => signOut()}>
