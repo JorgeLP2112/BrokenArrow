@@ -59,7 +59,7 @@ export const authOptions = {
       const { user, isNewUser } = ctx;
       try {
         if (isNewUser) {
-          user.roles = ["user"];
+          user.roles = ["user", "Estudiante"];
           user.createdAt = dateNowUnix();
           user.updatedAt = dateNowUnix();
           user.isNewUser = true;
