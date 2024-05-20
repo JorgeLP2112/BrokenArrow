@@ -423,7 +423,8 @@ const MultiStepForm = () => {
         languages: [],
         certifications: [],
         soft_skills: [],
-        profilePicture: ""
+        profilePicture: "",
+        type: "Estudiante"
     });
 
     const nextStep = () => setStep(step + 1);
