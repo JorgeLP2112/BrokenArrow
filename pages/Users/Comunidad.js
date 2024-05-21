@@ -49,31 +49,26 @@ const Home = () => {
         return <BaseLayout>
             <div className="min-h-screen bg-gray-200 py-8">
                 <div className="mx-auto px-4 w-4/5">
-                    <input
-                        type="text"
-                        placeholder="Buscar..."
-                        value={searchTerm}
-                        onChange={e => setSearchTerm(e.target.value)}
-                        className="p-2 mb-4 w-full"
-                    />
+                    <div className="flex">
+                        <input
+                            type="text"
+                            placeholder="Buscar..."
+                            value={searchTerm}
+                            onChange={e => setSearchTerm(e.target.value)}
+                            className="p-2 mb-4 w-3/4 mr-2"
+                        />
 
-                    <button
-                        onClick={() => fetchUser(userType, searchTerm)}
-                        className="p-2 mb-4 ml-2 bg-blue-500 text-white"
-                    >
-                        Buscar
-                    </button>
-
-                    <select
-                        value={userType}
-                        onChange={e => {
-                            setUserType(e.target.value); fetchUser(e.target.value, searchTerm);
-                        }}
-                        className="bg-white p-2 mb-4 w-full"
-                    >
-                        <option value="Estudiante">Estudiantes</option>
-                        <option value="Empresa">Empresas</option>
-                    </select>
+                        <select
+                            value={userType}
+                            onChange={e => {
+                                setUserType(e.target.value); fetchUser(e.target.value, searchTerm);
+                            }}
+                            className="bg-white p-2 mb-4 w-1/4"
+                        >
+                            <option value="Estudiante">Estudiantes</option>
+                            <option value="Empresa">Empresas</option>
+                        </select>
+                    </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {users.map((user) => (
