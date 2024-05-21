@@ -334,11 +334,9 @@ const Step10 = ({ nextStep, prevStep, values, setValues }) => {
             <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
             <label className="block">Agrega una imagen de perfil</label>
 
-
-            <CldUploadWidget uploadPreset="ml_default"
+            <CldUploadWidget uploadPreset="ProfilePics"
                 onSuccess={(results) => {
-                    console.log('Public ID', results.info.public_id);
-                    setValues({ ...values, profilePicture: results.info.public_id });
+                    setValues({ ...values, profilePicture: "ProfilePics/" + results.info.public_id });
                 }}
             >
                 {({ open }) => {
