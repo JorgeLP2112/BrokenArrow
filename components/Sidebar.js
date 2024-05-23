@@ -51,7 +51,7 @@ const Sidebar = () => {
                                 </Link>
                             </li>
 
-                            {session.user.roles[0] === "Admin" ? (
+                            {session && session.user && session.user.roles && session.user.roles[0] === "Admin" ? (
                                 <>
                                     <li className="sidebar__item">
                                         <Link
@@ -80,7 +80,7 @@ const Sidebar = () => {
                                 </>
                             ) : (
                                 <>
-                                    {session.user.roles[1] === "Estudiante" ? (
+                                    {session && session.user && session.user.roles && session.user.roles[1] === "Estudiante" ? (
                                         <>
                                             <li className="sidebar__item">
                                                 <Link
