@@ -4,22 +4,18 @@ import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@lib/mongodb";
 import { dateNowUnix } from "@/utils/dates";
-import GithubProvider from "next-auth/providers/github"
 import LinkedInProvider from "next-auth/providers/linkedin";
 
 export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
   // Configure one or more authentication providers
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET
-    }),
     LinkedInProvider({
       clientId: process.env.LINKEDIN_CLIENT_ID,
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET
     }),
     GoogleProvider({
+      name: "Google",
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       authorization: {
@@ -56,10 +52,16 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   events: {
     signIn: async (ctx) => {
-      const { user, isNewUser } = ctx;
+      const { user, isNewUser, account } = ctx;
       try {
         if (isNewUser) {
-          user.roles = ["user", "Estudiante"];
+
+          const role = new URL(account?.params?.callbackUrl).searchParams.get('role');
+          if (account?.providerAccountId) {
+            let rol = role || 'Estudiante';
+          }
+
+          user.roles = ["user", rol];
           user.createdAt = dateNowUnix();
           user.updatedAt = dateNowUnix();
           user.isNewUser = true;
@@ -92,7 +94,6 @@ export const authOptions = {
           .collection("users")
           .findOne({ email: session.user.email });
 
-        // Add the user's role to the session object
         session.user.roles = user.roles;
         session.user.id = user._id;
         session.user.profile = user.profile;
