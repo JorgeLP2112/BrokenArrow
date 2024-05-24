@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
 import Link from 'next/link'
 
-const main = () => {
+const Main = () => {
 
     const { data: session, status } = useSession();
     const [reportes, setReportes] = useState([]);
@@ -96,4 +96,4 @@ const main = () => {
     );
 };
 
-export default main;
+export default Main;
