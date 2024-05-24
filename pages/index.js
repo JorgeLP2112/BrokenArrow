@@ -18,7 +18,6 @@ const Home = () => {
 		}
 	}, [session, router, status]);
 
-
 	return <>
 		<Navbar />
 		<Hero />
