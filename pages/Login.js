@@ -2,11 +2,11 @@ import { signIn } from 'next-auth/react';
 
 function App() {
     const handleRegisterGoogle = () => {
-        signIn('google');
+        signIn('google', { callbackUrl: '/Publicaciones' });
     };
 
     const handleRegisterLinkedIn = () => {
-        signIn('linkedin');
+        signIn('linkedin', { callbackUrl: '/Publicaciones' });
     };
 
     const handleLogin = (e) => {
@@ -14,7 +14,7 @@ function App() {
         const email = e.target.email.value
         const password = e.target.password.value
 
-        signIn('credentials', { email, password, callbackUrl: '/api/auth/callback/credentials' })
+        signIn('credentials', { email, password, callbackUrl: '/Publicaciones' })
 
     }
 

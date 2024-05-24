@@ -52,16 +52,10 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   events: {
     signIn: async (ctx) => {
-      const { user, isNewUser, account } = ctx;
+      const { user, isNewUser } = ctx;
       try {
         if (isNewUser) {
-
-          const role = new URL(account?.params?.callbackUrl).searchParams.get('role');
-          if (account?.providerAccountId) {
-            let rol = role || 'Estudiante';
-          }
-
-          user.roles = ["user", rol];
+          user.roles = ["user"];
           user.createdAt = dateNowUnix();
           user.updatedAt = dateNowUnix();
           user.isNewUser = true;
