@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { CldImage } from 'next-cloudinary';
 import Link from 'next/link'
 
-
 const Home = () => {
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -79,12 +78,21 @@ const Home = () => {
                                             <CldImage width="600" height="600" src={user?.profilePicture} />
                                         </div>
                                         <div>
-                                            <p className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                                                {user.name} {user.lastname}
-                                            </p>
-                                            <p className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                                                {user.education.degree}
-                                            </p>
+
+                                            {userType == "Estudiante" ? (
+                                                <>
+                                                    <p className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                                                        {user?.name} {user?.lastname}
+                                                    </p>
+                                                    <p className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                                                        {user?.education?.degree}
+                                                    </p>
+                                                </>
+                                            ) : (
+                                                <p className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                                                    {user?.company_name}
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
                                 </Link>
