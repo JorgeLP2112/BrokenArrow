@@ -435,6 +435,7 @@ const Step11 = ({ prevStep, values }) => {
         });
 
         if (response.ok) {
+            const { data: session } = useSession();
             Swal.fire({
                 icon: "success",
                 title: "¡Completado!",
@@ -444,7 +445,6 @@ const Step11 = ({ prevStep, values }) => {
                     title: "black-font",
                 },
                 didClose: () => {
-                    const { data: session } = useSession();
                     session.user.isNewUser = false;
                     router.push(`/Users/`);
                 },
