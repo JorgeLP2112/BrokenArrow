@@ -8,11 +8,11 @@ export default function Footer() {
     return (
         <div className="relative">
             <Container>
-                <div className="grid max-w-screen-xl grid-cols-1 gap-10 pt-10 mx-auto mt-5 border-t border-gray-100 dark:border-trueGray-700 lg:grid-cols-5">
+                <div className="grid max-w-screen-xl grid-cols-1 gap-10 pt-10 mx-auto mt-5 border-t border-gray-100  lg:grid-cols-5">
                     <div className="lg:col-span-2">
                         <div>
                             {" "}
-                            <Link href="/" className="flex items-center space-x-2 text-2xl font-medium text-indigo-500 dark:text-gray-100">
+                            <Link href="/" className="flex items-center space-x-2 text-2xl font-medium text-indigo-500">
                                 <Image
                                     src="/logo.jpg"
                                     alt=""
@@ -44,7 +44,7 @@ export default function Footer() {
                     <div>
                         <div className="flex flex-wrap w-full -mt-2 -ml-3 lg:ml-0">
                             {legal.map((item, index) => (
-                                <Link key={index} href="/" className="w-full px-4 py-2 text-gray-500 rounded-md dark:text-gray-300 hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none dark:focus:bg-trueGray-700">
+                                <Link key={index} href="/" className="w-full px-4 py-2 text-gray-500 rounded-md  hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none dark:focus:bg-trueGray-700">
                                     {item}
                                 </Link>
                             ))}
@@ -52,7 +52,7 @@ export default function Footer() {
                     </div>
                     <div className="">
                         <div>Siguenos</div>
-                        <div className="flex mt-5 space-x-5 text-gray-400 dark:text-gray-500">
+                        <div className="flex mt-5 space-x-5 text-gray-400 ">
                             <a
                                 href="https://twitter.com"
                                 target="_blank"

@@ -1,19 +1,21 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@lib/mongodb";
+import { dateNowUnix } from "@/utils/dates";
+import LinkedInProvider from "next-auth/providers/linkedin";
 
 export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
   // Configure one or more authentication providers
   providers: [
-    DiscordProvider({
-      clientId: process.env.DISCORD_CLIENT_ID,
-      clientSecret: process.env.DISCORD_CLIENT_SECRET,
+    LinkedInProvider({
+      clientId: process.env.LINKEDIN_CLIENT_ID,
+      clientSecret: process.env.LINKEDIN_CLIENT_SECRET
     }),
     GoogleProvider({
+      name: "Google",
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       authorization: {
@@ -26,7 +28,6 @@ export const authOptions = {
     }),
     CredentialsProvider({
       name: "Credentials",
-
       credentials: {
         username: { label: "Username", type: "text", placeholder: "example" },
         password: { label: "Password", type: "password" },
@@ -49,25 +50,55 @@ export const authOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-  //,
-  // callbacks: {
-  //     async signIn({ account, profile }) {
-  //         if (account.provider === "google") {
-  //             return profile.email_verified && profile.email.endsWith("@example.com")
-  //         }
-  //         return true // Do different verification for other providers that don't have `email_verified`
-  //     },
-  //     async jwt({ token, account }) {
-  //         if (account) {
-  //             token.accessToken = account.access_token
-  //         }
-  //         return token
-  //     },
-  //     async session({ session, token, user }) {
-  //         session.accessToken = token.accessToken
-  //         return session
-  //     }
-  // }
+  events: {
+    signIn: async (ctx) => {
+      const { user, isNewUser } = ctx;
+      try {
+        if (isNewUser) {
+          user.roles = ["user"];
+          user.createdAt = dateNowUnix();
+          user.updatedAt = dateNowUnix();
+          user.isNewUser = true;
+          user.active = true;
+        }
+        user.lastLogin = dateNowUnix();
+        // Save the updated user to the database
+        const client = await clientPromise;
+        await client
+          .db()
+          .collection("users")
+          .updateOne({ email: user.email }, { $set: user });
+
+        console.log(`${user.email} logged in and updated in DB =>`);
+      } catch (error) {
+        console.log(`Error udating user ${user.email} in signinevent:`, error);
+      }
+    },
+  },
+  callbacks: {
+    async jwt({ token }) {
+      token.userRole = "admin"
+      return token
+    },
+    async session({ session, token }) {
+      try {
+        const client = await clientPromise;
+        const user = await client
+          .db()
+          .collection("users")
+          .findOne({ email: session.user.email });
+
+        session.user.roles = user.roles;
+        session.user.id = user._id;
+        session.user.profile = user.profile;
+        session.user.isNewUser = user.isNewUser;
+
+        return Promise.resolve(session);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+  }
 };
 
 export default NextAuth(authOptions);

@@ -3,40 +3,12 @@
 @tailwind utilities;
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap");
 
-/*Menu lateral*/
-:root {
-	--color-bg: #fff;
-	--color-border: #e5e7eb;
-	--color-sidebar-item: #f3f4f6;
-}
-
-* {
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-}
-
-/*Contenido*/
-body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-start-rgb));
-  font-family: "Roboto", sans-serif;
-}
-
-.layout {
-	display: flex;
-	height: 100vh;
-	position: relative;
-	gap: 2rem;
-}
-
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap");
-
-/*Menu lateral*/
 :root {
   --color-bg: #fff;
   --color-border: #e5e7eb;
   --color-sidebar-item: #f3f4f6;
+  --sidebar-collapsed-width: 6rem;
+  --sidebar-width: 18rem;
 }
 
 * {
@@ -45,22 +17,50 @@ body {
   box-sizing: border-box;
 }
 
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-start-rgb));
+  font-family: "Roboto", sans-serif;
+}
+
 .layout {
   display: flex;
   height: 100vh;
   position: relative;
   gap: 2rem;
+  margin-left: var(--sidebar-width); /* Esto empujará el contenido principal a la derecha, fuera del sidebar */
 }
 
 .layout__main-content {
   flex-grow: 1;
 }
 
+.layout-collapsed {
+  margin-left: var(--sidebar-collapsed-width);
+}
+
+.btn-collapsed {
+  left: 4rem;
+}
+
+.layout-expanded {
+  margin-left: var(--sidebar-width);
+}
+
+.btn-expanded {
+  left: 87%;
+}
+
 .sidebar__wrapper {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: var(--sidebar-width);
 }
 
 .sidebar {
+  position: fixed;
   width: 17rem;
   height: 100%;
   background-color: var(--color-bg);
@@ -86,13 +86,21 @@ body {
   border-radius: 1rem;
 }
 
-.sidebar__logo-name {
+.sidebar__logo-name,
+.sidebar__name {
   font-size: 1.2rem;
+}
+
+.sidebar__logo-name {
   font-weight: 600;
 }
 
 .sidebar__list {
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-bottom: 1rem; /* Ajusta este valor según tus necesidades */
 }
 
 .sidebar__link {
@@ -107,7 +115,6 @@ body {
   border-radius: 0.8rem;
 }
 
-/*Elemento seleccionado*/
 .sidebar__link--active {
   color: #fff;
   background-color: #10b981;
@@ -133,7 +140,6 @@ body {
 
 .btn {
   position: absolute;
-  right: 0;
   top: 4.7rem;
   border: none;
   background-color: var(--color-bg);
@@ -147,4 +153,13 @@ body {
   cursor: pointer;
   transform: translateX(50%);
   font-size: 1.1rem;
+}
+
+.sidebar__item__SignOut {
+  margin-bottom: auto;
+  order: 1;
+}
+
+.sidebar__item {
+  order: 0;
 }
