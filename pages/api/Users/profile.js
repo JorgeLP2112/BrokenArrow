@@ -42,21 +42,38 @@ async function getUsers(req, res) {
 }
 
 async function newUser(req, res) {
-    const { query: { idUser } } = req;
-
-    const { about, name, lastname, education, work_experience, skills, projects,
-        languages, certifications, soft_skills, career_goals, profilePicture, type
-    } = req.body;
-
     try {
+        let result;  // Define result here
+        const idUser = req.body.id;
         await client.connect();
         const database = client.db('test');
-        const result = await database.collection("profiles").insertOne({ idUser, name, lastname, about, education, work_experience, skills, projects, languages, certifications, soft_skills, career_goals, profilePicture, type });
+        if (req.body.type === "Empresa") {
+            const { company_name, company_description, industry, location, website, contact_information, profilePicture, type
+            } = req.body;
+            result = await database.collection("profiles").insertOne({ idUser, company_name, company_description, industry, location, website, contact_information, profilePicture, type });  // Assign a value to result here
+        } else {
+            const { about, name, lastname, education, work_experience, skills, projects,
+                languages, certifications, soft_skills, career_goals, profilePicture, type
+            } = req.body;
+            result = await database.collection("profiles").insertOne({
+                idUser, about, name, lastname, education, work_experience, skills, projects,
+                languages, certifications, soft_skills, career_goals, profilePicture, type
+            });  // Assign a value to result here
+        }
+
+        // Now result is available here
         if (result.acknowledged && result.insertedId) {
             const id = new ObjectId(idUser);
+            let updateFields = { isNewUser: false };
 
-            const updateResult = await database.collection("users").updateOne({ _id: id }, { $set: { isNewUser: false } });
-            req.session.user.isNewUser = false;
+            if (req.body.type === "Empresa") {
+                updateFields.active = false;
+            }
+
+            const updateResult = await database.collection("users").updateOne(
+                { _id: new ObjectId(id) },
+                { $set: updateFields }
+            );
 
             if (updateResult.acknowledged && updateResult.modifiedCount === 1) {
                 res.json({ message: 'User added successfully and isNewUser updated' });
