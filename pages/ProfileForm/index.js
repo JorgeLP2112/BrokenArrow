@@ -424,7 +424,8 @@ const Step10 = ({ nextStep, prevStep, values, setValues }) => {
 };
 
 const Step11 = ({ prevStep, values }) => {
-
+const { data: session } = useSession();
+    
     const handleSave = async () => {
         const response = await fetch('/api/Users/profile', {
             method: 'POST',
@@ -435,7 +436,6 @@ const Step11 = ({ prevStep, values }) => {
         });
 
         if (response.ok) {
-            const { data: session } = useSession();
             Swal.fire({
                 icon: "success",
                 title: "¡Completado!",
