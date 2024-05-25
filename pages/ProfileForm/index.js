@@ -425,6 +425,7 @@ const Step10 = ({ nextStep, prevStep, values, setValues }) => {
 
 const Step11 = ({ prevStep, values }) => {
 const { data: session } = useSession();
+const router = useRouter();
     
     const handleSave = async () => {
         const response = await fetch('/api/Users/profile', {
