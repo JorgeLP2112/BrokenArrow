@@ -116,7 +116,7 @@ const Sidebar = () => {
 
                             )}
                             <li className="sidebar__item__SignOut">
-                                <button className="sidebar__link" onClick={() => signOut()}>
+                                <button className="sidebar__link" onClick={() => signOut({ callbackUrl: '/' })}>
                                     <span className="sidebar__icon">
                                         <CiLogout />
                                     </span>
@@ -124,20 +124,7 @@ const Sidebar = () => {
                                 </button>
                             </li>
                         </>
-                    ) : (
-                        <>
-                            <li className="sidebar__item">
-
-                                <button className="sidebar__link" onClick={() => signIn()}>
-                                    <span className="sidebar__icon">
-                                        <BsPeople />
-                                    </span>
-                                    Iniciar Sesion
-                                </button>
-                            </li>
-
-                        </>
-                    )}
+                    ) : (null)}
                 </ul>
             </aside>
         </div>
