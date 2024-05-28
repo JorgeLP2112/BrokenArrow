@@ -4,75 +4,91 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { CldImage } from "next-cloudinary";
+import Link from "next/link";
 
 const Home = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     if (status !== "loading") {
       if (!session) {
         router.push("/");
-      } else if (session.user.isNewUser === true) {
+      } else if (
+        session.user.isNewUser === true &&
+        session.user.roles[0] === "User"
+      ) {
         router.push("/ProfileForm");
       }
     }
   }, [session, router, status]);
 
-  const posts = [
-    {
-      title: "Post 1",
-      subtitle: "Subtitle 1",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet justo nec justo tincidunt tristique. Nulla facilisi. Sed at felis auctor, bibendum libero eu, ultricies nunc. Aliquam erat volutpat. Nullam non turpis nec purus ultricies ultricies. Phasellus vel libero sed nunc vehicula feugiat. Proin auctor, nunc nec luctus ultricies, metus purus semper mauris, ut luctus justo libero nec nunc. Nulla facilisi. Aliquam erat volutpat. Nullam non turpis nec purus ultricies ultricies. Phasellus vel libero sed nunc vehicula feugiat. Proin auctor, nunc nec luctus ultricies, metus purus semper mauris, ut luctus justo libero nec nunc.",
-      images: [
-        "https://pbs.twimg.com/media/Dec3W99WkAYxZhW?format=jpg&name=4096x4096",
-        "https://www.google.com/url?sa=i&url=https%3Ahttps://pbs.twimg.com/media/DjJZFEAXcAEdHSo?format=jpg&name=4096x4096%2F%2Ftwitter.com%2FDatazoneC&psig=AOvVaw1ebSqijp9XjzOrKZr8SUcD&ust=1716163737455000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCIDh56G2mIYDFQAAAAAdAAAAABAJ",
-      ],
-    },
-    {
-      title: "Post 1",
-      subtitle: "Subtitle 1",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet justo nec justo tincidunt tristique. Nulla facilisi. Sed at felis auctor, bibendum libero eu, ultricies nunc. Aliquam erat volutpat. Nullam non turpis nec purus ultricies ultricies. Phasellus vel libero sed nunc vehicula feugiat. Proin auctor, nunc nec luctus ultricies, metus purus semper mauris, ut luctus justo libero nec nunc. Nulla facilisi. Aliquam erat volutpat. Nullam non turpis nec purus ultricies ultricies. Phasellus vel libero sed nunc vehicula feugiat. Proin auctor, nunc nec luctus ultricies, metus purus semper mauris, ut luctus justo libero nec nunc.",
-      images: [
-        "https://pbs.twimg.com/media/Dec3W99WkAYxZhW?format=jpg&name=4096x4096",
-        "https://www.google.com/url?sa=i&url=https%3Ahttps://pbs.twimg.com/media/DjJZFEAXcAEdHSo?format=jpg&name=4096x4096%2F%2Ftwitter.com%2FDatazoneC&psig=AOvVaw1ebSqijp9XjzOrKZr8SUcD&ust=1716163737455000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCIDh56G2mIYDFQAAAAAdAAAAABAJ",
-      ],
-    },
-    {
-      title: "Post 1",
-      subtitle: "Subtitle 1",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet justo nec justo tincidunt tristique. Nulla facilisi. Sed at felis auctor, bibendum libero eu, ultricies nunc. Aliquam erat volutpat. Nullam non turpis nec purus ultricies ultricies. Phasellus vel libero sed nunc vehicula feugiat. Proin auctor, nunc nec luctus ultricies, metus purus semper mauris, ut luctus justo libero nec nunc. Nulla facilisi. Aliquam erat volutpat. Nullam non turpis nec purus ultricies ultricies. Phasellus vel libero sed nunc vehicula feugiat. Proin auctor, nunc nec luctus ultricies, metus purus semper mauris, ut luctus justo libero nec nunc.",
-      images: [
-        "https://pbs.twimg.com/media/Dec3W99WkAYxZhW?format=jpg&name=4096x4096",
-        "https://www.google.com/url?sa=i&url=https%3Ahttps://pbs.twimg.com/media/DjJZFEAXcAEdHSo?format=jpg&name=4096x4096%2F%2Ftwitter.com%2FDatazoneC&psig=AOvVaw1ebSqijp9XjzOrKZr8SUcD&ust=1716163737455000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCIDh56G2mIYDFQAAAAAdAAAAABAJ",
-      ],
-    },
-  ];
+  useEffect(() => {
+    if (router.isReady) {
+      const fetchUser = async () => {
+        const response = await fetch(`/api/Users/ofertas`);
+        if (response.ok) {
+          const data = await response.json();
+          setPosts(data);
+        } else {
+          console.error("Failed to fetch user");
+        }
+      };
+      fetchUser();
+    }
+  }, [router.isReady, router.query.Profile]);
 
   return (
     <BaseLayout>
       <div className="min-h-screen bg-gray-200 py-8">
-        <div className="container mx-auto px-4 w-4/5">
-          {posts.map((post, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md mb-6 p-6">
-              <h2 className="text-2xl font-bold mb-2">{post.title}</h2>
-              <h3 className="text-xl mb-2">{post.subtitle}</h3>
-              <p className="mb-4">{post.text}</p>
-              {post.images.map((image, index) => (
-                <img
-                  key={index}
-                  src={image}
-                  className="w-full h-64 object-cover mb-4 rounded"
-                />
-              ))}
-              <button className="px-4 py-2 bg-blue-500 text-white rounded-md">
-                Aplicar
-              </button>
+        <div className="container mx-auto px-4 w-9/10 flex">
+          <div className="w-3/4 ml-8" id="1">
+            {posts.map((post, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-lg shadow-md mb-6 p-6"
+              >
+                <Link href={"/Posts/ofertas?id=" + post._id} passHref>
+                  <div className="flex items-center">
+                    <div className="h-14 w-14 overflow-hidden sm:rounded-full sm:relative sm:p-0 left-0 p-3">
+                      <CldImage
+                        width="200"
+                        height="200"
+                        src={post.profilePicture}
+                      />
+                    </div>
+                    <div className="flex-col flex-wrap">
+                      <h2 className="text-2xl font-bold ml-2 block">
+                        {post.job_title}
+                      </h2>
+                      <h3 className="text-xl font-bold ml-2 ">
+                        {post.company_name}
+                      </h3>
+                    </div>
+                  </div>
+                  <p className="mb-4 mt-6">{post.job_description}</p>
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <CldImage width="400" height="400" src={post.images} />
+                  </div>
+                  <div className="flex justify-end">
+                    <button className="px-4 py-2 bg-blue-500 text-white rounded-md">
+                      Ver mas
+                    </button>
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </div>
+          <div className="w-1/4 ml-16" id="2">
+            <div className="sticky top-40">
+              <div className="bg-white rounded-lg shadow-md">
+                <p>Filtros</p>
+              </div>
             </div>
-          ))}
+          </div>
         </div>
       </div>
-      <Footer />
     </BaseLayout>
   );
 };

@@ -10,6 +10,7 @@ import { CiLogout } from "react-icons/ci";
 import { AiOutlineHome } from "react-icons/ai";
 import { BsPeople } from "react-icons/bs";
 import { FiMail } from "react-icons/fi";
+import { useMediaQuery } from 'react-responsive';
 
 const Sidebar = () => {
     const router = useRouter();
@@ -18,8 +19,12 @@ const Sidebar = () => {
 
     const btnClass = isCollapsed ? 'btn-collapsed' : 'btn-expanded';
 
+    const isDesktopOrLaptop = useMediaQuery({
+        query: '(min-device-width: 1224px)'
+    });
+
     return (
-        <div className="sidebar__wrapper">
+        <div className={`sidebar__wrapper ${isDesktopOrLaptop ? 'flex-col' : 'flex-row'}`}>
             <button className={`btn ${btnClass}`} onClick={toggleSidebarcollapse}>
                 {isCollapsed ? <MdKeyboardArrowRight /> : <MdKeyboardArrowLeft />}
             </button>
@@ -97,6 +102,30 @@ const Sidebar = () => {
                                         </>
                                     ) : (
                                         <>
+                                            <li className="sidebar__item">
+                                                <Link
+                                                    className={`sidebar__link ${router.pathname === `/Posts/CrearOferta` ? `sidebar__link--active` : ""
+                                                        }`}
+                                                    href={`/Posts/CrearOferta`}
+                                                >
+                                                    <span className="sidebar__icon">
+                                                        <FiMail />
+                                                    </span>
+                                                    <span className="sidebar__name">Nueva oferta</span>
+                                                </Link>
+                                            </li>
+                                            <li className="sidebar__item">
+                                                <Link
+                                                    className={`sidebar__link ${router.pathname === `/Posts/OfertasHechas` ? `sidebar__link--active` : ""
+                                                        }`}
+                                                    href={`/Posts/OfertasHechas`}
+                                                >
+                                                    <span className="sidebar__icon">
+                                                        <FiMail />
+                                                    </span>
+                                                    <span className="sidebar__name">Ofertas hechas</span>
+                                                </Link>
+                                            </li>
                                         </>
                                     )}
 
@@ -112,11 +141,12 @@ const Sidebar = () => {
                                             <span className="sidebar__name">Perfil</span>
                                         </Link>
                                     </li>
+
                                 </>
 
                             )}
                             <li className="sidebar__item__SignOut">
-                                <button className="sidebar__link" onClick={() => signOut()}>
+                                <button className="sidebar__link" onClick={() => signOut({ callbackUrl: '/' })}>
                                     <span className="sidebar__icon">
                                         <CiLogout />
                                     </span>
@@ -124,20 +154,7 @@ const Sidebar = () => {
                                 </button>
                             </li>
                         </>
-                    ) : (
-                        <>
-                            <li className="sidebar__item">
-
-                                <button className="sidebar__link" onClick={() => signIn()}>
-                                    <span className="sidebar__icon">
-                                        <BsPeople />
-                                    </span>
-                                    Iniciar Sesion
-                                </button>
-                            </li>
-
-                        </>
-                    )}
+                    ) : (null)}
                 </ul>
             </aside>
         </div>
