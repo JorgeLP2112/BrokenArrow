@@ -397,6 +397,23 @@ const Step9 = ({ nextStep, prevStep, values, setValues }) => {
 };
 
 const Step10 = ({ nextStep, prevStep, values, setValues }) => {
+    const handleChange = (event) => {
+        setValues({ ...values, [event.target.name]: event.target.value });
+    };
+
+    return (
+        <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
+            <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
+            <h2 className="text-lg font-bold mb-4">¿A qué correo te gustaria que las empresas te contacten?</h2>
+            <input type='text' name="email" onChange={handleChange} value={values.email} placeholder='Nombre/s' className="w-full mb-4 p-2 border rounded-md"></input>
+
+            <button onClick={prevStep} className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2">Anterior</button>
+            <button onClick={nextStep} className="px-4 py-2 bg-blue-500 text-white rounded-md">Siguiente</button>
+        </div>
+    );
+};
+
+const Step11 = ({ nextStep, prevStep, values, setValues }) => {
 
     return (
         <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
@@ -423,9 +440,9 @@ const Step10 = ({ nextStep, prevStep, values, setValues }) => {
     )
 };
 
-const Step11 = ({ prevStep, values }) => {
-const { data: session } = useSession();
-    
+const Step12 = ({ prevStep, values }) => {
+    const { data: session } = useSession();
+
     const handleSave = async () => {
         const response = await fetch('/api/Users/profile', {
             method: 'POST',
@@ -524,7 +541,9 @@ const MultiStepForm = () => {
         case 10:
             return <Step10 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
         case 11:
-            return <Step11 values={values} />;
+            return <Step11 nextStep={nextStep} prevStep={prevStep} setValues={setValues} values={values} />;
+        case 12:
+            return <Step12 values={values} />;
     }
 };
 
