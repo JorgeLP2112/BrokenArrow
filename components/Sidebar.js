@@ -34,10 +34,10 @@ const Sidebar = () => {
                         width={80}
                         height={80}
                         className="sidebar__logo"
-                        src="/logo.jpg"
+                        src="/logo.png"
                         alt="logo"
                     />
-                    <p className="sidebar__logo-name">JKB Jobs</p>
+                    <p className="sidebar__logo-name">UniTalent</p>
                 </div>
                 <ul className="sidebar__list">
 
