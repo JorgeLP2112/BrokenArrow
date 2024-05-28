@@ -1,19 +1,13 @@
 import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@lib/mongodb";
 import { dateNowUnix } from "@/utils/dates";
-import LinkedInProvider from "next-auth/providers/linkedin";
 
 export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
   // Configure one or more authentication providers
   providers: [
-    LinkedInProvider({
-      clientId: process.env.LINKEDIN_CLIENT_ID,
-      clientSecret: process.env.LINKEDIN_CLIENT_SECRET
-    }),
     GoogleProvider({
       name: "Google",
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -24,28 +18,6 @@ export const authOptions = {
           access_type: "offline",
           response_type: "code",
         },
-      },
-    }),
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        username: { label: "Username", type: "text", placeholder: "example" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials, req) {
-        const res = await fetch("/your/endpoint", {
-          method: "POST",
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" },
-        });
-        const user = await res.json();
-
-        // If no error and we have user data, return it
-        if (res.ok && user) {
-          return user;
-        }
-        // Return null if user data could not be retrieved
-        return null;
       },
     }),
   ],
@@ -77,8 +49,8 @@ export const authOptions = {
   },
   callbacks: {
     async jwt({ token }) {
-      token.userRole = "admin"
-      return token
+      token.userRole = "admin";
+      return token;
     },
     async session({ session, token }) {
       try {
@@ -98,8 +70,7 @@ export const authOptions = {
         return Promise.reject(error);
       }
     },
-  }
+  },
 };
 
 export default NextAuth(authOptions);
-
