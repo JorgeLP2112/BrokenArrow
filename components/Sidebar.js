@@ -1,16 +1,18 @@
 import Image from "next/image";
-
 import Link from "next/link";
 import { useContext } from "react";
 import { SidebarContext } from "@/context/SidebarContext";
 import { useRouter } from "next/router";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
-import { AiOutlineHome } from "react-icons/ai";
 import { BsPeople } from "react-icons/bs";
-import { FiMail } from "react-icons/fi";
-import { useMediaQuery } from 'react-responsive';
+import { CgProfile } from "react-icons/cg";
+import { FaUsers } from "react-icons/fa";
+import { BsPostcardFill } from "react-icons/bs";
+import { HiDocumentPlus } from "react-icons/hi2";
+import { FaRegFolderOpen } from "react-icons/fa";
+import { VscReport } from "react-icons/vsc";
 
 const Sidebar = () => {
     const router = useRouter();
@@ -19,12 +21,8 @@ const Sidebar = () => {
 
     const btnClass = isCollapsed ? 'btn-collapsed' : 'btn-expanded';
 
-    const isDesktopOrLaptop = useMediaQuery({
-        query: '(min-device-width: 1224px)'
-    });
-
     return (
-        <div className={`sidebar__wrapper ${isDesktopOrLaptop ? 'flex-col' : 'flex-row'}`}>
+        <div className={`sidebar__wrapper flex-col`}>
             <button className={`btn ${btnClass}`} onClick={toggleSidebarcollapse}>
                 {isCollapsed ? <MdKeyboardArrowRight /> : <MdKeyboardArrowLeft />}
             </button>
@@ -50,7 +48,7 @@ const Sidebar = () => {
                                     href="/Publicaciones"
                                 >
                                     <span className="sidebar__icon">
-                                        <AiOutlineHome />
+                                        <BsPostcardFill />
                                     </span>
                                     <span className="sidebar__name">Publicaciones</span>
                                 </Link>
@@ -65,7 +63,7 @@ const Sidebar = () => {
                                             href="/Admins/Usuarios"
                                         >
                                             <span className="sidebar__icon">
-                                                <FiMail />
+                                                <FaUsers />
                                             </span>
                                             <span className="sidebar__name">Usuarios</span>
                                         </Link>
@@ -77,7 +75,7 @@ const Sidebar = () => {
                                             href="/Admins/Reportes"
                                         >
                                             <span className="sidebar__icon">
-                                                <FiMail />
+                                                <VscReport />
                                             </span>
                                             <span className="sidebar__name">Reportes</span>
                                         </Link>
@@ -94,7 +92,7 @@ const Sidebar = () => {
                                                     href="/Users/Comunidad"
                                                 >
                                                     <span className="sidebar__icon">
-                                                        <FiMail />
+                                                        <BsPeople />
                                                     </span>
                                                     <span className="sidebar__name">Comunidad</span>
                                                 </Link>
@@ -109,7 +107,7 @@ const Sidebar = () => {
                                                     href={`/Posts/CrearOferta`}
                                                 >
                                                     <span className="sidebar__icon">
-                                                        <FiMail />
+                                                        <HiDocumentPlus />
                                                     </span>
                                                     <span className="sidebar__name">Nueva oferta</span>
                                                 </Link>
@@ -121,7 +119,7 @@ const Sidebar = () => {
                                                     href={`/Posts/OfertasHechas`}
                                                 >
                                                     <span className="sidebar__icon">
-                                                        <FiMail />
+                                                        <FaRegFolderOpen />
                                                     </span>
                                                     <span className="sidebar__name">Ofertas hechas</span>
                                                 </Link>
@@ -136,7 +134,7 @@ const Sidebar = () => {
                                             href={`/Users/${session.user.id}`}
                                         >
                                             <span className="sidebar__icon">
-                                                <FiMail />
+                                                <CgProfile />
                                             </span>
                                             <span className="sidebar__name">Perfil</span>
                                         </Link>
