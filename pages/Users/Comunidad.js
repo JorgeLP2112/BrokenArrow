@@ -17,10 +17,8 @@ const Home = () => {
         if (status !== 'loading') {
             if (!session) {
                 router.push('../');
-            } else if (session.user.isNewUser === true && session.user.roles[1] === "Estudiante") {
-                router.push('/Users/profileFormEstudiante');
-            } else if (session.user.isNewUser === true && session.user.roles[1] === "Empresa") {
-                router.push('/Users/profileFormEmpresa');
+            } else if (session.user.isNewUser === true) {
+                router.push('/ProfileForm/');
             }
         }
     }, [session, router, status]);
