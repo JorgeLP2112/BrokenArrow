@@ -10,12 +10,19 @@ const Step0 = ({ userId, nextStep }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
 
+  const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,25}$/;
+
   const handleNextStep = async () => {
-    if (password !== confirmPassword) {
+    if (
+      password !== confirmPassword ||
+      password === "" ||
+      confirmPassword === "" ||
+      !passwordRegex.test(password)
+    ) {
       Swal.fire({
         icon: "error",
         title: "¡Error!",
-        text: "Las contraseñas deben coincidir",
+        text: "Las contraseñas deben coincidir, tener al menos 8 caracteres, una letra mayúscula y un número.",
         background: "#fff",
         customClass: {
           title: "black-font",
@@ -57,6 +64,8 @@ const Step0 = ({ userId, nextStep }) => {
         onChange={(e) => setUsername(e.target.value)}
         placeholder="Usuario"
         className="w-full mb-4 p-2 border rounded-md"
+        maxLength={25}
+        required
       ></input>
       <input
         type="password"
@@ -64,6 +73,8 @@ const Step0 = ({ userId, nextStep }) => {
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Contraseña"
         className="w-full mb-4 p-2 border rounded-md"
+        minLength={8}
+        maxLength={25}
         required
       ></input>
       <input
@@ -951,7 +962,7 @@ const MultiStepForm = () => {
         />
       );
     case 1:
-      return <Step1 userId={id} nextStep={nextStep} />;
+      return <Step1 userId={id} nextStep={nextStep} prevStep={prevStep} />;
     case 2:
       return (
         <Step2
