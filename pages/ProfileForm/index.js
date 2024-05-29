@@ -876,7 +876,7 @@ const Step13 = ({ prevStep, values }) => {
         },
         didClose: () => {
           session.user.isNewUser = false;
-          router.push(`/Users/Comunidad`);
+          router.push(`/Publicaciones`);
         },
       });
     } else {

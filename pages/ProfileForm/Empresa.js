@@ -275,7 +275,7 @@ const Step8 = ({ prevStep, values }) => {
         },
         didClose: () => {
           session.user.isNewUser = false;
-          router.push(`/Users/`);
+          router.push(`/Publicaciones`);
         },
       });
     } else {
