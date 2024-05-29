@@ -12,8 +12,11 @@
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^2.5.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@headlessui/react": "^2.0.3",
     "@heroicons/react": "^2.1.1",
+    "@mui/material": "^5.15.18",
     "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "date-fns": "^3.6.0",
