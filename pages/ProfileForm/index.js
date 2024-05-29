@@ -117,7 +117,7 @@ const Step1 = ({ userId, nextStep, prevStep }) => {
         throw new Error("Network response was not ok");
       }
       if (userType !== "Estudiante") {
-        console.log("redireccionando a empresa");
+        console.log("Redirigir a empresa");
         router.push(`/ProfileForm/Empresa`);
       } else {
         nextStep();
@@ -151,7 +151,7 @@ const Step1 = ({ userId, nextStep, prevStep }) => {
             htmlFor="react-option"
             className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
           >
-            <div className="block flex flex-col items-center">
+            <div className="flex flex-col items-center">
               <svg
                 className="mb-2 w-12 h-12 text-sky-500"
                 fill="currentColor"
@@ -190,7 +190,7 @@ const Step1 = ({ userId, nextStep, prevStep }) => {
             htmlFor="flowbite-option"
             className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
           >
-            <div className="block flex flex-col items-center">
+            <div className="flex flex-col items-center">
               <svg
                 className="mb-2 w-12 h-12 text-sky-500"
                 fill="currentColor"
@@ -533,7 +533,7 @@ const Step7 = ({ nextStep, prevStep, values, setValues }) => {
     <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
       <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
       <h2 className="text-lg font-bold mb-4">
-        ¿Qué habilidades tecnicas posees?
+        ¿Qué habilidades técnicas posees?
       </h2>
 
       {Object.keys(skills).map((skillKey, index) => (
