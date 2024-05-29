@@ -1,7 +1,7 @@
 import Sidebar from "./Sidebar";
 import { useContext } from 'react';
 import { SidebarContext } from '@/context/SidebarContext';
-import NavBar from "./NavBar";
+import NavBar from "./Navbar";
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 const BaseLayout = ({ children }) => {
