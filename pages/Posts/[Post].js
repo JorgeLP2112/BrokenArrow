@@ -100,7 +100,7 @@ const JobPosting = () => {
         if (router.isReady) {
             fetchPost();
         }
-    }, [router.isReady, router.query.Profile]);
+    }, [router.isReady, router.query.id]);
 
     async function guardar() {
         const result = await Swal.fire({
@@ -130,6 +130,51 @@ const JobPosting = () => {
                 setIsEditable(!isEditable);
             }
         }
+    }
+
+    function reportar() {
+        Swal.fire({
+            title: 'Reportar oferta',
+            input: 'text',
+            inputPlaceholder: 'Escribe aquí el motivo de tu reporte...',
+            showCancelButton: true,
+            confirmButtonText: 'Reportar',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const reportReason = result.value;
+                console.log(reportReason, session.user.id, router.query.id, "Oferta");
+                fetch('/api/report', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ reason: reportReason, User: session.user.id, Post: router.query.id, type: "Oferta" }),
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Server response was not ok.');
+                        }
+                    })
+                    .then(data => {
+                        Swal.fire(
+                            'Reporte enviado',
+                            'Tu reporte ha sido enviado exitosamente',
+                            'success'
+                        );
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        Swal.fire(
+                            'Reporte fallido',
+                            'Tu reporte no se ha hecho correctamente',
+                            'error'
+                        );
+                    });
+            }
+        });
     }
 
     if (isLoading) {
@@ -284,37 +329,49 @@ const JobPosting = () => {
 
                         </div>
 
-                        <div className="flex justify-end">
-                            {session.user.id === post.company_id ? (
-                                <>
-                                    {isEditable ? (
-                                        <>
-                                            <button className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 active:bg-red-800 focus:outline-none" onClick={() => { setIsEditable(!isEditable); setEditedPost({ ...post }) }}>Cancelar</button>
-                                            <button className="px-4 py-2 ml-1 bg-green-400 text-white rounded-md hover:bg-green-500 active:bg-green-600 focus:outline-none" onClick={() => guardar()}>Guardar</button>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <button className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 active:bg-red-800 focus:outline-none" onClick={() => eliminar()}>Eliminar</button>
-                                            <button className="px-4 py-2 ml-1 bg-slate-500 text-white rounded-md hover:bg-slate-600 active:bg-slate-700 focus:outline-none" onClick={() => { setIsEditable(!isEditable); setEditedPost({ ...post }) }}>Editar</button>
-                                        </>
-                                    )}
-                                </>
-                            ) : <>
-                                {session.user.roles && session.user.roles[1] === "Estudiante" && post.aplicable ? (
+                        <div className="flex justify-between">
+
+                            { /*
+                            <div className="flex justify-start">
+                                <button className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 active:bg-red-800 focus:outline-none" onClick={() => { reportar() }}>
+                                    Reportar oferta
+                                </button>
+                                    </div>*/}
+
+                            <div className="flex justify-end">
+                                {session.user.id === post.company_id ? (
                                     <>
-                                        <button
-                                            className="px-4 py-2 bg-red-600 text-white rounded-md"
-                                            onClick={() => { aplicar() }}
-                                            disabled={post?.aplicantes?.includes(session.user.id)}
-                                        >
-                                            {post?.aplicantes?.includes(session.user.id) ? "Ya has aplicado" : "Aplicar"}
-                                        </button>
+                                        {isEditable ? (
+                                            <>
+                                                <button className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 active:bg-red-800 focus:outline-none" onClick={() => { setIsEditable(!isEditable); setEditedPost({ ...post }) }}>Cancelar</button>
+                                                <button className="px-4 py-2 ml-1 bg-green-400 text-white rounded-md hover:bg-green-500 active:bg-green-600 focus:outline-none" onClick={() => guardar()}>Guardar</button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <button className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 active:bg-red-800 focus:outline-none" onClick={() => eliminar()}>Eliminar</button>
+                                                <button className="px-4 py-2 ml-1 bg-slate-500 text-white rounded-md hover:bg-slate-600 active:bg-slate-700 focus:outline-none" onClick={() => { setIsEditable(!isEditable); setEditedPost({ ...post }) }}>Editar</button>
+                                            </>
+                                        )}
                                     </>
-                                ) : (null)}
-                            </>
-                            }
+                                ) : <>
+                                    {session.user.roles && session.user.roles[1] === "Estudiante" && post.aplicable ? (
+                                        <>
+                                            <button
+                                                className="px-4 py-2 bg-red-600 text-white rounded-md"
+                                                onClick={() => { aplicar() }}
+                                                disabled={post?.aplicantes?.includes(session.user.id)}
+                                            >
+                                                {post?.aplicantes?.includes(session.user.id) ? "Ya has aplicado" : "Aplicar"}
+                                            </button>
+                                        </>
+                                    ) : (null)}
+                                </>
+                                }
+
+                            </div>
 
                         </div>
+
                     </div>
                     {session.user.id === post.company_id ? (<>
                         <div className="bg-white rounded-lg shadow-md mb-6 p-6">
