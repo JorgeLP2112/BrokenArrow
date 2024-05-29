@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { CldImage } from "next-cloudinary";
 import Link from "next/link";
+import { el } from "date-fns/locale";
 
 const Home = () => {
   const { data: session, status } = useSession();
@@ -20,6 +21,11 @@ const Home = () => {
         session.user.roles[0] === "User"
       ) {
         router.push("/ProfileForm");
+      } else if (
+        session.user.isNewUser === false &&
+        session.user.roles[0] === "Admin"
+      ) {
+        router.push("/Admins/Usuarios");
       }
     }
   }, [session, router, status]);

@@ -3,6 +3,8 @@ import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@lib/mongodb";
 import { dateNowUnix } from "@/utils/dates";
+import Credentials from "next-auth/providers/credentials";
+import bcrypt from "bcrypt";
 
 export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
@@ -20,6 +22,48 @@ export const authOptions = {
         },
       },
     }),
+    Credentials({
+      name: "Credentials",
+      credentials: {
+        username: { label: "Username", type: "text", placeholder: "Usuario" },
+        password: {
+          label: "Password",
+          type: "password",
+          placeholder: "Contraseña",
+        },
+      },
+      async authorize(credentials) {
+        try {
+          const client = new MongoClient(process.env.MONGODB_URI);
+          await client.connect();
+
+          const collection = client.db("test").collection("Users");
+          const user = await collection.findOne({
+            username: credentials.username,
+          });
+
+          if (
+            user &&
+            (await bcrypt.compare(credentials.password, user.password))
+          ) {
+            return { name: user.username };
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "¡Error!",
+              text: "Credenciales inválidas",
+              background: "#fff",
+              customClass: {
+                title: "black-font",
+              },
+            });
+            return null;
+          }
+        } catch (error) {
+          return error;
+        }
+      },
+    }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
   events: {
@@ -34,16 +78,20 @@ export const authOptions = {
           user.active = true;
         }
         user.lastLogin = dateNowUnix();
+        console.log(`${user.email} logged in =>`, user);
         // Save the updated user to the database
         const client = await clientPromise;
         await client
-          .db()
+          .db("test")
           .collection("users")
           .updateOne({ email: user.email }, { $set: user });
 
         console.log(`${user.email} logged in and updated in DB =>`);
       } catch (error) {
-        console.log(`Error udating user ${user.email} in signinevent:`, error);
+        console.log(
+          `Error updating user ${user.email} in sign in event:`,
+          error
+        );
       }
     },
   },
@@ -59,6 +107,8 @@ export const authOptions = {
           .db()
           .collection("users")
           .findOne({ email: session.user.email });
+
+        console.log("Session user:", user);
 
         session.user.roles = user.roles;
         session.user.id = user._id;
