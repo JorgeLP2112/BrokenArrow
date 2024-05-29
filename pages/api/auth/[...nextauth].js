@@ -4,6 +4,7 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@lib/mongodb";
 import { dateNowUnix } from "@/utils/dates";
 import Credentials from "next-auth/providers/credentials";
+import Swal from "sweetalert2";
 import bcrypt from "bcrypt";
 
 export const authOptions = {
@@ -34,11 +35,11 @@ export const authOptions = {
       },
       async authorize(credentials) {
         try {
-          const client = new MongoClient(process.env.MONGODB_URI);
-          await client.connect();
+          const client = await clientPromise;
+          const db = client.db("test");
+          const usersCollection = db.collection("users");
 
-          const collection = client.db("test").collection("Users");
-          const user = await collection.findOne({
+          const user = await usersCollection.findOne({
             username: credentials.username,
           });
 
@@ -46,7 +47,8 @@ export const authOptions = {
             user &&
             (await bcrypt.compare(credentials.password, user.password))
           ) {
-            return { name: user.username };
+            // Devuelve el objeto de usuario de la base de datos
+            return { ...user };
           } else {
             Swal.fire({
               icon: "error",
@@ -69,6 +71,7 @@ export const authOptions = {
   events: {
     signIn: async (ctx) => {
       const { user, isNewUser } = ctx;
+      console.log("Sign in event =>", user);
       try {
         if (isNewUser) {
           user.roles = ["user"];
@@ -117,6 +120,7 @@ export const authOptions = {
 
         return Promise.resolve(session);
       } catch (error) {
+        console.log("Error in session callback:", error);
         return Promise.reject(error);
       }
     },
