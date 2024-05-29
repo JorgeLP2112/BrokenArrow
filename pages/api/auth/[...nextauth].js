@@ -1,19 +1,16 @@
 import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@lib/mongodb";
 import { dateNowUnix } from "@/utils/dates";
-import LinkedInProvider from "next-auth/providers/linkedin";
+import Credentials from "next-auth/providers/credentials";
+import Swal from "sweetalert2";
+import bcrypt from "bcrypt";
 
 export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
   // Configure one or more authentication providers
   providers: [
-    LinkedInProvider({
-      clientId: process.env.LINKEDIN_CLIENT_ID,
-      clientSecret: process.env.LINKEDIN_CLIENT_SECRET
-    }),
     GoogleProvider({
       name: "Google",
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -26,26 +23,47 @@ export const authOptions = {
         },
       },
     }),
-    CredentialsProvider({
+    Credentials({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "example" },
-        password: { label: "Password", type: "password" },
+        username: { label: "Username", type: "text", placeholder: "Usuario" },
+        password: {
+          label: "Password",
+          type: "password",
+          placeholder: "Contraseña",
+        },
       },
-      async authorize(credentials, req) {
-        const res = await fetch("/your/endpoint", {
-          method: "POST",
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" },
-        });
-        const user = await res.json();
+      async authorize(credentials) {
+        try {
+          const client = await clientPromise;
+          const db = client.db("test");
+          const usersCollection = db.collection("users");
 
-        // If no error and we have user data, return it
-        if (res.ok && user) {
-          return user;
+          const user = await usersCollection.findOne({
+            username: credentials.username,
+          });
+
+          if (
+            user &&
+            (await bcrypt.compare(credentials.password, user.password))
+          ) {
+            // Devuelve el objeto de usuario de la base de datos
+            return { ...user };
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "¡Error!",
+              text: "Credenciales inválidas",
+              background: "#fff",
+              customClass: {
+                title: "black-font",
+              },
+            });
+            return null;
+          }
+        } catch (error) {
+          return error;
         }
-        // Return null if user data could not be retrieved
-        return null;
       },
     }),
   ],
@@ -53,6 +71,7 @@ export const authOptions = {
   events: {
     signIn: async (ctx) => {
       const { user, isNewUser } = ctx;
+      console.log("Sign in event =>", user);
       try {
         if (isNewUser) {
           user.roles = ["user"];
@@ -62,23 +81,27 @@ export const authOptions = {
           user.active = true;
         }
         user.lastLogin = dateNowUnix();
+        console.log(`${user.email} logged in =>`, user);
         // Save the updated user to the database
         const client = await clientPromise;
         await client
-          .db()
+          .db("test")
           .collection("users")
           .updateOne({ email: user.email }, { $set: user });
 
         console.log(`${user.email} logged in and updated in DB =>`);
       } catch (error) {
-        console.log(`Error udating user ${user.email} in signinevent:`, error);
+        console.log(
+          `Error updating user ${user.email} in sign in event:`,
+          error
+        );
       }
     },
   },
   callbacks: {
     async jwt({ token }) {
-      token.userRole = "admin"
-      return token
+      token.userRole = "admin";
+      return token;
     },
     async session({ session, token }) {
       try {
@@ -88,6 +111,8 @@ export const authOptions = {
           .collection("users")
           .findOne({ email: session.user.email });
 
+        console.log("Session user:", user);
+
         session.user.roles = user.roles;
         session.user.id = user._id;
         session.user.profile = user.profile;
@@ -95,11 +120,11 @@ export const authOptions = {
 
         return Promise.resolve(session);
       } catch (error) {
+        console.log("Error in session callback:", error);
         return Promise.reject(error);
       }
     },
-  }
+  },
 };
 
 export default NextAuth(authOptions);
-

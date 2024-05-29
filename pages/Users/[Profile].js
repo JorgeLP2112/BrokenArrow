@@ -41,31 +41,41 @@ const Home = () => {
     } else {
         return <BaseLayout>
 
-            <div className="bg-gray-100 p-4">
+            <div className="bg-gray-100 p-4"> {/*Contenedor general del perfil*/}
 
-                <div className="border-1 shadow-lg shadow-gray-700 rounded-lg">
-
-                    <div className="flex rounded-t-lg bg-top-color sm:px-2 w-full">
-                        <div className="h-40 w-40 overflow-hidden sm:rounded-full sm:relative sm:p-0 top-10 left-5 p-3">
-                            <CldImage width="600" height="600" src={user?.profilePicture} />
+                <div className="border-1 shadow-lg shadow-gray-400 rounded-lg">
+{/*------------------Contenedor superior del perfil*/}
+                    <div className="flex flex-wrap rounded-t-lg">
+        {/*-------------Contenedor de foto de perfil */}
+                        <div className="w-1/2 sm:w-1/2 lg:w-1/4 mx-auto sm:mx-0 flex justify-center items-center">
+                            <div className="border-4 border-jkb-secondary wx-auto lg:h-48 lg:w-48 m-4 overflow-hidden sm:rounded-full sm:relative sm:p-0">
+                                <CldImage className="min-h-24 min-w-24" width="600" height="600" src={user?.profilePicture} />
+                            </div>
                         </div>
-
-                        <div className="w-2/3 sm:text-center pl-5 mt-10 text-start">
-                            <p className="font-poppins font-bold text-heading sm:text-4xl text-2xl">
-                                {user?.type === "Estudiante" ? user?.name + " " + user?.lastname : user?.company_name}
-                            </p>
-                            {user?.type === "Estudiante" ? <p className="text-heading">{user?.education?.degree}</p> : null}
+        {/*-----------------Contenedor del Nombre de usuario y carrera */}
+                        <div className="flex flex-col px-auto py-0 sm:py-5 ">
+                            <div className="h-auto w-auto ml-5 sm:ml-0 sm:mt-5 sm:text-center text-start sm:text-10">
+                                <p className="font-poppins font-bold text-heading sm:text-4xl text-2xl">
+                                    {user?.type === "Estudiante" ? user?.name + " " + user?.lastname : user?.company_name}
+                                </p>
+                                {user?.type === "Estudiante" ? <p className="text-lg text-heading text-jkb-tertiary font-bold">{user?.education?.degree}</p> : null}
+                            </div>
+                            <div className=" flex flex-col py-3 mx-5 sm:ml-6 lg:ml-24 min-ml-3">
+                                <h2 className="text-lg font-poppins font-bold text-top-color">Sobre mí</h2>
+                                <div className="border-2 w-32 border-jkb-primary my-3"></div>
+                                <p>{user?.about}</p>
+                            </div>
                         </div>
-
                     </div>
+                    {/*Contenedor de la parte baja del perfil */}
+                    <div className="p-2">
 
-                    <div className="p-5">
-
-                        <div className="flex flex-col sm:flex-row sm:mt-10">
+                        <div className="flex flex-col sm:flex-row w-full">
 
                             {user?.type === "Estudiante" ? (
+    /*------------------------------Contenedor de la columna izquierda del perfil */
                                 <>
-                                    <div className="flex flex-col sm:w-1/3">
+                                    <div className="flex flex-col sm:w-1/4 mx-3 sm:mx-auto order-first">
 
                                         {/*
                             <div className="py-3 sm:order-none order-3">
@@ -97,53 +107,79 @@ const Home = () => {
                                 </div>
                             </div>
                             */}
+                {/*---------------------Contenedor del Contacto */}
+                                        <div className="py-3">
+                                            <h2 className="text-lg font-poppins font-bold text-top-color">Contacto</h2>
+                                            <div className="border-2 w-32 border-jkb-primary my-3"></div>
 
-                                        <div className="py-3 sm:order-none order-2">
+                                            <div>
+                                                <p>Contacto</p>
+                                            </div>
+                                        </div>
+
+                {/*---------------------Contenedor de Lenguajes */}
+                                        <div className="py-3 ">
+                                            <h2 className="text-lg font-poppins font-bold text-top-color">Lenguajes</h2>
+                                            <div className="border-2 w-32 border-jkb-primary my-3"></div>
+
+                                            <div>
+                                                {user?.languages?.map((data, index) => (
+                                                    <div className="flex items-center my-1" key={index}>
+                                                        <div className="ml-2 text-gray-700 hover:text-jkb-primary">
+                                                            <p>{data.language}:     {data.proficiency}</p>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                {/*------------------------Contenedor de las Skills*/}
+                                        <div className="py-3 sm:order-none">
                                             <h2 className="text-lg font-poppins font-bold text-top-color">Skills</h2>
-                                            <div className="border-2 w-20 border-top-color my-3"></div>
+                                            <div className="border-2 w-32 border-jkb-primary my-3"></div>
 
                                             <div>
                                                 {user?.skills?.map((data, index) => (
                                                     <div className="flex items-center my-1" key={index}>
-                                                        <div className="ml-2 text-gray-700 hover:text-orange-600">
+                                                        <div className="ml-2 text-gray-700 hover:text-jkb-primary">
                                                             <p>{data}</p>
                                                         </div>
                                                     </div>
                                                 ))}
                                             </div>
 
-                                        </div>
-                                        <div className="py-3 sm:order-none order-1">
-                                            <h2 className="text-lg font-poppins font-bold text-top-color">Educacion</h2>
-                                            <div className="border-2 w-20 border-top-color my-3"></div>
+                {/*---------------------Contenedor de Soft Skills */}
+                                        <div className="py-3">
+                                            <h2 className="text-lg font-poppins font-bold text-top-color">Soft Skills</h2>
+                                            <div className="border-2 w-32 border-jkb-primary my-3"></div>
 
-                                            <div className="flex flex-col space-y-1">
-
-                                                {/*user?.education.map((data, index) => ())*/}
-                                                <div className="flex flex-col" >
-                                                    <p className="font-semibold text-xs text-gray-700">{user?.education.period}</p>
-                                                    <p className="text-sm font-medium">
-                                                        <span className="text-green-700">{user?.education.school}. </span>
-                                                        {user?.education.degree}
-                                                    </p>
-                                                </div>
-
-
+                                            <div>
+                                                {user?.soft_skills?.map((data, index) => (
+                                                    <div className="flex items-center my-1" key={index}>
+                                                        <div className="ml-2 text-gray-700 hover:text-jkb-primary">
+                                                            <p>{data}</p>
+                                                        </div>
+                                                    </div>
+                                                ))}
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div className="flex flex-col sm:w-2/3 order-first sm:order-none sm:-mt-10">
-
-                                        <div className="py-3">
-                                            <h2 className="text-lg font-poppins font-bold text-top-color">Sobre mi</h2>
-                                            <div className="border-2 w-20 border-top-color my-3"></div>
-                                            <p>{user?.about}</p>
                                         </div>
+                
+                                    </div>
+                {/*-------------------------Contenedor de la columna derecha del perfil */}
+                                    <div className="flex flex-col sm:w-2/3 mx-3 sm:order-none">
+
+                    {/*-----------------Contenedor del apartado Sobre mi */}
+                                        {/*<div className="py-3">
+                                            <h2 className="text-lg font-poppins font-bold text-top-color">Sobre mí</h2>
+                                            <div className="border-2 w-32 border-jkb-primary my-3"></div>
+                                            <p>{user?.about}</p>
+                                            </div>*/}
 
                                         <div className="py-3">
                                             <h2 className="text-lg font-poppins font-bold text-top-color">Experiencia profesional</h2>
-                                            <div className="border-2 w-20 border-top-color my-3"></div>
+                                            <div className="border-2 w-32 border-jkb-primary my-3"></div>
                                             <div className="flex flex-col">
 
                                                 {user?.work_experience?.map((experience, index) => (
@@ -157,10 +193,10 @@ const Home = () => {
 
                                             </div>
                                         </div>
-
+                    {/*Contenedor de los Proyectos */}
                                         <div className="py-3">
-                                            <h2 className="text-lg font-poppins font-bold text-top-color">Projectos</h2>
-                                            <div className="border-2 w-20 border-top-color my-3"></div>
+                                            <h2 className="text-lg font-poppins font-bold text-top-color">Proyectos</h2>
+                                            <div className="border-2 w-32 border-jkb-primary my-3"></div>
 
                                             <div className="flex flex-col">
 
@@ -168,6 +204,26 @@ const Home = () => {
                                                     <p className="text-lg font-semibold text-gray-700">Projecto_1</p>
                                                     <p className="font-normal text-sm text-gray-700 mb-1 pl-2">Descripcion</p>
                                                 </div>
+
+                                            </div>
+                                        </div>
+
+                    {/*-------------------------Contenedor de la Educación */}
+                                        <div className="py-3 sm:order-none">
+                                            <h2 className="text-lg font-poppins font-bold text-top-color">Educación</h2>
+                                            <div className="border-2 w-32 border-jkb-primary my-3"></div>
+
+                                            <div className="flex flex-col space-y-1">
+
+                                                {/*user?.education.map((data, index) => ())*/}
+                                                <div className="flex flex-col" >
+                                                    <p className="font-semibold text-s text-gray-700">{user?.education.period}</p>
+                                                    <p className="text-sm font-medium">
+                                                        <span className="text-jkb-tertiary font-bold">{user?.education.school}. </span>
+                                                        {user?.education.degree}
+                                                    </p>
+                                                </div>
+
 
                                             </div>
                                         </div>
