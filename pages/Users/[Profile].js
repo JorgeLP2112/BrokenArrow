@@ -44,27 +44,27 @@ const Home = () => {
             <div className="bg-gray-100 p-4"> {/*Contenedor general del perfil*/}
 
                 <div className="border-1 shadow-lg shadow-gray-400 rounded-lg">
-{/*------------------Contenedor superior del perfil*/}
+                    {/*------------------Contenedor superior del perfil*/}
                     <div className="flex flex-wrap bg-jkb-tertiary rounded-t-lg">
-        {/*-------------Contenedor de foto de perfil */}
+                        {/*-------------Contenedor de foto de perfil */}
                         <div className="w-1/2 sm:w-1/2 lg:w-1/4 mx-auto sm:mx-0 flex justify-center items-center">
                             <div className="border-4 border-jkb-secondary wx-auto lg:h-48 lg:w-48 m-4 overflow-hidden sm:rounded-full sm:relative sm:p-0">
                                 <CldImage className="min-h-24 min-w-24" width="600" height="600" src={user?.profilePicture} />
                             </div>
                         </div>
-        {/*-----------------Contenedor del Nombre de usuario y carrera */}
+                        {/*-----------------Contenedor del Nombre de usuario y carrera */}
                         <div className="flex flex-col px-auto py-0 sm:py-5 ">
-                                    <div className={`h-auto w-auto ml-5 sm:ml-0 sm:mt-5 sm:text-center text-start sm:text-10 ${user?.type !== "Estudiante" ? "flex items-center justify-center h-full mr-3 sm:mr-0 mb-3 sm:mb-0" : ""}`}>
-                                        <p className="font-poppins font-bold text-heading sm:text-4xl text-2xl">
-                                            {user?.type === "Estudiante" ? user?.name + " " + user?.lastname : user?.company_name}
-                                        </p>
-                                        {user?.type === "Estudiante" ? <p className="text-lg text-heading text-jkb-secondary font-bold">{user?.education?.degree}</p> : null}
-                                    </div>
+                            <div className={`h-auto w-auto ml-5 sm:ml-0 sm:mt-5 sm:text-center text-start sm:text-10 ${user?.type !== "Estudiante" ? "flex items-center justify-center h-full mr-3 sm:mr-0 mb-3 sm:mb-0" : ""}`}>
+                                <p className="font-poppins font-bold text-heading sm:text-4xl text-2xl">
+                                    {user?.type === "Estudiante" ? user?.name + " " + user?.lastname : user?.company_name}
+                                </p>
+                                {user?.type === "Estudiante" ? <p className="text-lg text-heading text-jkb-secondary font-bold">{user?.education?.degree}</p> : null}
+                            </div>
                             {user?.type === "Estudiante" && (
                                 <div className="flex flex-col py-3 mx-5 sm:ml-6 lg:ml-24 min-ml-3">
-                                <h2 className="text-lg font-poppins font-bold text-top-color">Sobre mí</h2>
-                                <div className="border-2 w-32 border-jkb-secondary my-3"></div>
-                                <p className="font-medium">{user?.about}</p>
+                                    <h2 className="text-lg font-poppins font-bold text-top-color">Sobre mí</h2>
+                                    <div className="border-2 w-32 border-jkb-secondary my-3"></div>
+                                    <p className="font-medium">{user?.about}</p>
                                 </div>
                             )}
                         </div>
@@ -75,7 +75,7 @@ const Home = () => {
                         <div className="flex flex-col mt-2 sm:flex-row w-full">
 
                             {user?.type === "Estudiante" ? (
-    /*------------------------------Contenedor de la columna izquierda del perfil */
+                                /*------------------------------Contenedor de la columna izquierda del perfil */
                                 <>
                                     <div className="flex flex-col sm:w-1/4 mx-3 sm:mx-auto order-first">
 
@@ -109,7 +109,7 @@ const Home = () => {
                                 </div>
                             </div>
                             */}
-                {/*---------------------Contenedor del Contacto */}
+                                        {/*---------------------Contenedor del Contacto */}
                                         <div className="py-3">
                                             <h2 className="text-lg font-poppins font-bold text-top-color">Contacto</h2>
                                             <div className="border-2 w-32 border-jkb-primary my-3"></div>
@@ -119,7 +119,7 @@ const Home = () => {
                                             </div>
                                         </div>
 
-                {/*---------------------Contenedor de Lenguajes */}
+                                        {/*---------------------Contenedor de Lenguajes */}
                                         <div className="py-3 ">
                                             <h2 className="text-lg font-poppins font-bold text-top-color">Lenguajes</h2>
                                             <div className="border-2 w-32 border-jkb-primary my-3"></div>
@@ -135,7 +135,7 @@ const Home = () => {
                                             </div>
                                         </div>
 
-                {/*------------------------Contenedor de las Skills*/}
+                                        {/*------------------------Contenedor de las Skills*/}
                                         <div className="py-3 sm:order-none">
                                             <h2 className="text-lg font-poppins font-bold text-top-color">Skills</h2>
                                             <div className="border-2 w-32 border-jkb-primary my-3"></div>
@@ -150,29 +150,29 @@ const Home = () => {
                                                 ))}
                                             </div>
 
-                {/*---------------------Contenedor de Soft Skills */}
-                                        <div className="py-3">
-                                            <h2 className="text-lg font-poppins font-bold text-top-color">Soft Skills</h2>
-                                            <div className="border-2 w-32 border-jkb-primary my-3"></div>
+                                            {/*---------------------Contenedor de Soft Skills */}
+                                            <div className="py-3">
+                                                <h2 className="text-lg font-poppins font-bold text-top-color">Soft Skills</h2>
+                                                <div className="border-2 w-32 border-jkb-primary my-3"></div>
 
-                                            <div>
-                                                {user?.soft_skills?.map((data, index) => (
-                                                    <div className="flex items-center my-1" key={index}>
-                                                        <div className="ml-2 text-gray-700 hover:text-jkb-primary">
-                                                            <p>{data}</p>
+                                                <div>
+                                                    {user?.soft_skills?.map((data, index) => (
+                                                        <div className="flex items-center my-1" key={index}>
+                                                            <div className="ml-2 text-gray-700 hover:text-jkb-primary">
+                                                                <p>{data}</p>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                ))}
+                                                    ))}
+                                                </div>
                                             </div>
-                                        </div>
 
                                         </div>
-                
+
                                     </div>
-                {/*-------------------------Contenedor de la columna derecha del perfil */}
+                                    {/*-------------------------Contenedor de la columna derecha del perfil */}
                                     <div className="flex flex-col sm:w-2/3 mx-3 sm:order-none">
 
-                    {/*-----------------Contenedor del apartado Sobre mi */}
+                                        {/*-----------------Contenedor del apartado Sobre mi */}
                                         {/*<div className="py-3">
                                             <h2 className="text-lg font-poppins font-bold text-top-color">Sobre mí</h2>
                                             <div className="border-2 w-32 border-jkb-primary my-3"></div>
@@ -195,7 +195,7 @@ const Home = () => {
 
                                             </div>
                                         </div>
-                    {/*Contenedor de los Proyectos */}
+                                        {/*Contenedor de los Proyectos */}
                                         <div className="py-3">
                                             <h2 className="text-lg font-poppins font-bold text-top-color">Proyectos</h2>
                                             <div className="border-2 w-32 border-jkb-primary my-3"></div>
@@ -203,14 +203,18 @@ const Home = () => {
                                             <div className="flex flex-col">
 
                                                 <div className="flex flex-col">
-                                                    <p className="text-lg font-semibold text-gray-700">Projecto_1</p>
-                                                    <p className="font-normal text-sm text-gray-700 mb-1 pl-2">Descripcion</p>
+                                                    {user?.projects?.map((experience, index) => (
+                                                        <>
+                                                            <h2 className="text-lg font-bold text-gray-700">{experience.name}</h2>
+                                                            <p className="font-semibold text-sm text-gray-700">{experience.description}</p>
+                                                        </>
+                                                    ))}
                                                 </div>
 
                                             </div>
                                         </div>
 
-                    {/*-------------------------Contenedor de la Educación */}
+                                        {/*-------------------------Contenedor de la Educación */}
                                         <div className="py-3 sm:order-none">
                                             <h2 className="text-lg font-poppins font-bold text-top-color">Educación</h2>
                                             <div className="border-2 w-32 border-jkb-primary my-3"></div>
@@ -233,9 +237,9 @@ const Home = () => {
                                 </>
                             ) : (
                                 <>
-{/*-----------------------Contenedor de los datos del Perfil de una Empresa */}
+                                    {/*-----------------------Contenedor de los datos del Perfil de una Empresa */}
 
-                {/*-----------------------Contenedor de la columna izquierda */}
+                                    {/*-----------------------Contenedor de la columna izquierda */}
                                     <div className="flex flex-col px-5 py-3 sm:w-1/3 sm:ml-4 order-1 sm:order-none">
                                         <h2 className="text-xl font-bold">Información de contacto</h2>
                                         <div className="border-2 w-32 border-jkb-primary my-3"></div>
@@ -253,7 +257,7 @@ const Home = () => {
                                         <a href={user?.website} target="_blank" rel="noopener noreferrer">{user?.website}</a>
                                     </div>
 
-                {/*-----------------------Contenedor de la columna derecha */}
+                                    {/*-----------------------Contenedor de la columna derecha */}
                                     <div className="flex flex-col flex-grow px-5 py-3 sm:w-1/3">
                                         <h2 className="text-xl font-bold">Sobre nosotros</h2>
                                         <div className="border-2 w-32 border-jkb-primary my-3"></div>
