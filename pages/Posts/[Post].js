@@ -335,7 +335,6 @@ const JobPosting = () => {
                   <thead className="bg-gray-200">
                     <tr>
                       <th className="px-4 py-2">Nombre</th>
-                      <th className="px-4 py-2">CV</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -345,8 +344,6 @@ const JobPosting = () => {
                           <Link href={`/Users/${aplicante.id}`} className="text-blue-500 hover:underline">
                             {aplicante.Nombre}
                           </Link>
-                        </td>
-                        <td className="px-4 py-2">
                         </td>
                       </tr>
                     ))}
