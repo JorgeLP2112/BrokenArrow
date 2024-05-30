@@ -22,7 +22,6 @@ const Home = () => {
 		<Navbar />
 		<Hero />
 		<Benefits data={benefitOne} />
-		<Benefits imgPos="right" data={benefitTwo} />
 		<Footer />
 	</>;
 };

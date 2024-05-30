@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { CldUploadWidget } from "next-cloudinary";
+import { CldImage, CldUploadWidget } from "next-cloudinary";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
+import TextareaAutosize from 'react-textarea-autosize';
+import ProfilePlaceholder from "@/public/ProfilePlaceholder.png";
+import Image from "next/image";
 
 const Step0 = ({ userId, nextStep }) => {
   const [username, setUsername] = useState("");
@@ -197,8 +200,6 @@ const Step1 = ({ userId, nextStep, prevStep }) => {
                 aria-hidden="true"
                 viewBox="0 0 512 512"
               >
-                {" "}
-                {/* Increase size here */}
                 <path d="M364.374,207.697V25.508H156.687v100.57H0v343.717h156.687v0.241h338.858V207.69H364.374V207.697z M103.291,455.226 v-82.651H67.976v82.651H14.579V140.65h142.108v314.576H103.291z M480.968,455.464H296.352V308.503h-63.158v146.961h-61.937V126.078 v-85.99h178.536v182.188h131.175V455.464z M190.144,75.303h30.369v67.539h-30.369V75.303z M248.334,75.303h30.358v67.539h-30.358 V75.303z M304.308,75.303h30.371v67.539h-30.371V75.303z M190.144,179.022h30.369v74.828h-30.369V179.022z M248.334,179.022h30.358 v74.828h-30.358V179.022z M304.308,179.022h30.371v74.828h-30.371V179.022z M388.721,324.421h-30.359v-69.362h30.359V324.421z M388.721,435.426h-30.359v-71.18h30.359V435.426z M452.478,324.421h-30.358v-69.362h30.358V324.421z M452.478,435.426h-30.358 v-71.18h30.358V435.426z M38.569,164.88h30.359v69.357H38.569V164.88z M38.569,274.058h30.359v71.179H38.569V274.058z M102.329,164.88h30.358v69.357h-30.358V164.88z M102.329,274.058h30.358v71.179h-30.358V274.058z"></path>
               </svg>
               <div className="w-full text-lg font-semibold">Empresa</div>
@@ -211,6 +212,11 @@ const Step1 = ({ userId, nextStep, prevStep }) => {
         </li>
       </ul>
       <button
+        onClick={prevStep}
+        className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2"
+      >Anterior
+      </button>
+      <button
         onClick={handleNextStep}
         className="px-4 py-2 bg-blue-500 text-white rounded-md mt-4"
       >
@@ -221,8 +227,19 @@ const Step1 = ({ userId, nextStep, prevStep }) => {
 };
 
 const Step2 = ({ nextStep, prevStep, values, setValues }) => {
+  const [errorMessage, setErrorMessage] = useState(null);
+
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
+    setErrorMessage(null);
+  };
+
+  const handleNextStep = () => {
+    if (values.name && values.lastname) {
+      nextStep();
+    } else {
+      setErrorMessage('Por favor, completa todos los campos antes de continuar.');
+    }
   };
 
   return (
@@ -245,6 +262,7 @@ const Step2 = ({ nextStep, prevStep, values, setValues }) => {
         placeholder="Apellidos"
         className="w-full mb-4 p-2 border rounded-md"
       ></input>
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       <button
         onClick={prevStep}
         className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2"
@@ -252,7 +270,7 @@ const Step2 = ({ nextStep, prevStep, values, setValues }) => {
         Anterior
       </button>
       <button
-        onClick={nextStep}
+        onClick={handleNextStep}
         className="px-4 py-2 bg-blue-500 text-white rounded-md"
       >
         Siguiente
@@ -266,16 +284,30 @@ const Step3 = ({ nextStep, prevStep, values, setValues }) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const handleNextStep = () => {
+    if (values.about) {
+      nextStep();
+    } else {
+      setErrorMessage('Por favor, completa todos los campos antes de continuar.');
+    }
+  };
+
   return (
     <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
       <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
       <label className="block">Cuéntanos un poco sobre ti</label>
-      <textarea
+      <TextareaAutosize
         name="about"
         onChange={handleChange}
         value={values.about}
+        minRows={3}
+        maxRows={20}
         className="w-full mb-4 p-2 border rounded-md"
-      ></textarea>
+        style={{ resize: 'none', overflow: 'hidden' }}
+      />
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       <button
         onClick={prevStep}
         className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2"
@@ -283,7 +315,7 @@ const Step3 = ({ nextStep, prevStep, values, setValues }) => {
         Anterior
       </button>
       <button
-        onClick={nextStep}
+        onClick={handleNextStep}
         className="px-4 py-2 bg-blue-500 text-white rounded-md"
       >
         Siguiente
@@ -301,6 +333,17 @@ const Step4 = ({ nextStep, prevStep, values, setValues }) => {
         [event.target.name]: event.target.value,
       },
     });
+    setErrorMessage(null);
+  };
+
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const handleNextStep = () => {
+    if (values.education.degree && values.education.school && values.education.period) {
+      nextStep();
+    } else {
+      setErrorMessage('Por favor, completa todos los campos antes de continuar.');
+    }
   };
 
   return (
@@ -333,6 +376,7 @@ const Step4 = ({ nextStep, prevStep, values, setValues }) => {
         value={values.education.period}
         className="w-full mb-4 p-2 border rounded-md"
       />
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       <button
         onClick={prevStep}
         className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2"
@@ -340,7 +384,7 @@ const Step4 = ({ nextStep, prevStep, values, setValues }) => {
         Anterior
       </button>
       <button
-        onClick={nextStep}
+        onClick={handleNextStep}
         className="px-4 py-2 bg-blue-500 text-white rounded-md"
       >
         Siguiente
@@ -795,8 +839,19 @@ const Step10 = ({ nextStep, prevStep, values, setValues }) => {
 };
 
 const Step11 = ({ nextStep, prevStep, values, setValues }) => {
+  const [errorMessage, setErrorMessage] = useState(null);
+
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
+    setErrorMessage(null);
+  };
+
+  const handleNextStep = () => {
+    if (values.email && values.cellphone) {
+      nextStep();
+    } else {
+      setErrorMessage('Por favor, completa todos los campos antes de continuar.');
+    }
   };
 
   return (
@@ -810,10 +865,21 @@ const Step11 = ({ nextStep, prevStep, values, setValues }) => {
         name="email"
         onChange={handleChange}
         value={values.email}
-        placeholder="Nombre/s"
+        placeholder="Correo electrónico"
         className="w-full mb-4 p-2 border rounded-md"
       ></input>
-
+      <h2 className="text-lg font-bold mb-4">
+        ¿A qué telefono te gustaria que las empresas te contacten?
+      </h2>
+      <input
+        type="text"
+        name="cellphone"
+        onChange={handleChange}
+        value={values.cellphone}
+        placeholder="Número de teléfono"
+        className="w-full mb-4 p-2 border rounded-md"
+      ></input>
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       <button
         onClick={prevStep}
         className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2"
@@ -821,7 +887,7 @@ const Step11 = ({ nextStep, prevStep, values, setValues }) => {
         Anterior
       </button>
       <button
-        onClick={nextStep}
+        onClick={handleNextStep}
         className="px-4 py-2 bg-blue-500 text-white rounded-md"
       >
         Siguiente
@@ -831,11 +897,35 @@ const Step11 = ({ nextStep, prevStep, values, setValues }) => {
 };
 
 const Step12 = ({ nextStep, prevStep, values, setValues }) => {
+
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const handleNextStep = () => {
+    if (values.profilePicture) {
+      nextStep();
+    } else {
+      setErrorMessage('Por favor, agregue una imagen antes de continuar.');
+    }
+  };
+
   return (
     <div className="mx-auto w-full sm:w-3/4 md:w-2/5 bg-white shadow-md p-4 rounded-md">
       <h2 className="text-xl font-bold mb-4">Completa tu perfil</h2>
       <label className="block">Agrega una imagen de perfil</label>
-
+      <div className="flex justify-center items-center bg-gray-100">
+        {values.profilePicture ? (
+          <CldImage width="200" height="200" src={values.profilePicture} />
+        ) : (
+          <Image
+            src={ProfilePlaceholder}
+            width="150"
+            height="150"
+            alt="Profile Picture"
+            loading="eager"
+            placeholder="blur"
+          />
+        )}
+      </div>
       <CldUploadWidget
         uploadPreset="ProfilePics"
         onSuccess={(results) => {
@@ -843,10 +933,29 @@ const Step12 = ({ nextStep, prevStep, values, setValues }) => {
         }}
       >
         {({ open }) => {
-          return <button onClick={() => open()}>Sube una imagen</button>;
+          return <button
+            onClick={() => open()}
+            className="mx-auto block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center justify-start"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke="currentColor"
+              className="w-5 h-5 mr-2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+              ></path>
+            </svg>
+            Sube una foto de perfil
+          </button>;
         }}
       </CldUploadWidget>
-
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       <button
         onClick={prevStep}
         className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2"
@@ -854,7 +963,7 @@ const Step12 = ({ nextStep, prevStep, values, setValues }) => {
         Anterior
       </button>
       <button
-        onClick={nextStep}
+        onClick={handleNextStep}
         className="px-4 py-2 bg-blue-500 text-white rounded-md"
       >
         Siguiente
@@ -946,6 +1055,8 @@ const MultiStepForm = () => {
     soft_skills: [],
     profilePicture: "",
     type: "Estudiante",
+    email: "",
+    cellphone: "",
   });
 
   const nextStep = () => setStep(step + 1);
