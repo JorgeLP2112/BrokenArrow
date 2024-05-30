@@ -54,7 +54,7 @@ const Home = () => {
                         </div>
         {/*-----------------Contenedor del Nombre de usuario y carrera */}
                         <div className="flex flex-col px-auto py-0 sm:py-5 ">
-                                    <div className={`h-auto w-auto ml-5 sm:ml-0 sm:mt-5 sm:text-center text-start sm:text-10 ${user?.type !== "Estudiante" ? "flex items-center justify-center h-full" : ""}`}>
+                                    <div className={`h-auto w-auto ml-5 sm:ml-0 sm:mt-5 sm:text-center text-start sm:text-10 ${user?.type !== "Estudiante" ? "flex items-center justify-center h-full mr-3 sm:mr-0 mb-3 sm:mb-0" : ""}`}>
                                         <p className="font-poppins font-bold text-heading sm:text-4xl text-2xl">
                                             {user?.type === "Estudiante" ? user?.name + " " + user?.lastname : user?.company_name}
                                         </p>
