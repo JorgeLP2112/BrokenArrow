@@ -29,6 +29,9 @@ const Navbar = () => {
                                         <span>UniTalent</span>
                                     </span >
                                 </Link >
+                                <Link href="/Login" className="w-full px-6 py-2 mt-3 text-center text-white bg-jkb-tertiary rounded-md lg:ml-5 lg:hidden">
+                                    Inicia Sesión
+                                </Link>
                             </div >
                         </>
                     )}
