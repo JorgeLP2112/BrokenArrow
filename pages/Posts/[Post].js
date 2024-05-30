@@ -131,6 +131,16 @@ const JobPosting = () => {
       }
     });
   }
+  
+  const fetchPost = async () => {
+    const response = await fetch(`/api/Users/ofertas?id=${router.query.id}`);
+    if (response.ok) {
+        const data = await response.json();
+        setPost(data);
+    } else {
+        console.error('Failed to fetch user');
+    }
+};
 
   if (isLoading) {
     return <BaseLayout><div>Loading...</div></BaseLayout>;
