@@ -5,7 +5,7 @@ import { benefitOne, benefitTwo } from "@/components/data";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from 'react';
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/NavbarLanding";
 
 
 const Home = () => {
@@ -22,7 +22,6 @@ const Home = () => {
 		<Navbar />
 		<Hero />
 		<Benefits data={benefitOne} />
-		<Benefits imgPos="right" data={benefitTwo} />
 		<Footer />
 	</>;
 };

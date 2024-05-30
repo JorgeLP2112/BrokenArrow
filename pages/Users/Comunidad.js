@@ -17,10 +17,8 @@ const Home = () => {
         if (status !== 'loading') {
             if (!session) {
                 router.push('../');
-            } else if (session.user.isNewUser === true && session.user.roles[1] === "Estudiante") {
-                router.push('/Users/profileFormEstudiante');
-            } else if (session.user.isNewUser === true && session.user.roles[1] === "Empresa") {
-                router.push('/Users/profileFormEmpresa');
+            } else if (session.user.isNewUser === true) {
+                router.push('/ProfileForm/');
             }
         }
     }, [session, router, status]);
@@ -48,13 +46,14 @@ const Home = () => {
         return <BaseLayout>
             <div className="min-h-screen bg-gray-200 py-8">
                 <div className="mx-auto px-4 w-4/5">
-                    <div className="flex">
+                    <div className="flex flex-col sm:flex-row">
+
                         <input
                             type="text"
                             placeholder="Buscar..."
                             value={searchTerm}
                             onChange={e => setSearchTerm(e.target.value)}
-                            className="p-2 mb-4 w-3/4 mr-2"
+                            className="p-2 mb-4 w-full sm:w-3/4 mr-2"
                         />
 
                         <select
@@ -62,7 +61,7 @@ const Home = () => {
                             onChange={e => {
                                 setUserType(e.target.value); fetchUser(e.target.value, searchTerm);
                             }}
-                            className="bg-white p-2 mb-4 w-1/4"
+                            className="bg-white p-2 mb-4 w-full sm:w-1/4"
                         >
                             <option value="Estudiante">Estudiantes</option>
                             <option value="Empresa">Empresas</option>
@@ -74,11 +73,11 @@ const Home = () => {
                             <div key={user.id} className="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
                                 <Link href={'/Users/' + user.idUser}>
                                     <div className="flex items-center">
-                                        <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
-                                            <CldImage width="600" height="600" src={user?.profilePicture} />
+                                        <div className="w-1/4 rounded-full mr-4">
+                                            <CldImage width="800" height="800" src={user?.profilePicture} className="rounded-full w-full" />
                                         </div>
-                                        <div>
 
+                                        <div className="w-3/4">
                                             {userType == "Estudiante" ? (
                                                 <>
                                                     <p className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
@@ -94,6 +93,7 @@ const Home = () => {
                                                 </p>
                                             )}
                                         </div>
+
                                     </div>
                                 </Link>
                             </div>

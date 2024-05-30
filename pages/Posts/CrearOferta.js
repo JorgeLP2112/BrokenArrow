@@ -74,7 +74,7 @@ const Job = () => {
                     </h3>
                     <input
                       type="text"
-                      className="text-2xl font-bold block bg-gray-50 rounded-lg border border-blue-200 focus:outline-none"
+                      className="text-2xl font-bold block bg-gray-50 rounded-lg border border-blue-200 focus:outline-none w-full sm:w-auto px-2"
                       value={post.job_title}
                       placeholder=""
                       onChange={(e) =>
@@ -99,8 +99,8 @@ const Job = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center">
-                  <div className="w-full sm:w-1/2 bg-blue-100 ">
+                <div className="flex flex-col lg:flex-row">
+                  <div className="md:w-1/2 h-full">
                     <div className="mt-4 mr-3 mb-4 pl-4 flex items-center justify-center">
                       {post.images ? (
                         <CldImage width="800" height="800" src={post.images} />
@@ -148,7 +148,7 @@ const Job = () => {
                     </CldUploadWidget>
                   </div>
 
-                  <div className="w-1/2 pl-8">
+                  <div className="md:w-1/2">
                     <h3 className="text-xl font-bold mt-4 ">Requisitos</h3>
                     <textarea
                       className="mb-4 w-full bg-gray-50 rounded-lg border border-blue-200 focus:outline-none resize-none"
@@ -195,23 +195,30 @@ const Job = () => {
                         setPost({ ...post, salary: e.target.value })
                       }
                     />
+                  </div>
+                </div>
 
+                <div className="flex flex-col sm:flex-row items-center space-x-0">
+                  <div className="w-full sm:w-1/2">
                     <h3 className="text-xl font-bold ">Fecha de inicio</h3>
                     <input
                       type="date"
-                      className="mb-4 w-full bg-gray-50 rounded-lg border border-blue-200 focus:outline-none"
+                      className="mb-4 w-1/2 bg-gray-50 rounded-lg border border-blue-200 focus:outline-none"
                       value={post.start_date}
                       onChange={(e) =>
                         setPost({ ...post, start_date: e.target.value })
                       }
                     />
 
+                  </div>
+
+                  <div className="w-full sm:w-1/2">
                     <h3 className="text-xl font-bold ">
                       Fecha límite de solicitud
                     </h3>
                     <input
                       type="date"
-                      className="mb-4 w-full bg-gray-50 rounded-lg border border-blue-200 focus:outline-none"
+                      className="mb-4 w-1/2 bg-gray-50 rounded-lg border border-blue-200 focus:outline-none"
                       value={post.application_deadline}
                       onChange={(e) =>
                         setPost({
@@ -223,15 +230,16 @@ const Job = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center">
-                  <div className="w-1/2 flex-col flex-wrap mt-4 mb-4">
+
+                <div className="flex flex-col sm:flex-row items-center space-x-0">
+                  <div className="w-full sm:w-1/2">
                     <h3 className="text-xl font-bold">
                       Información de contacto
                     </h3>
-                    <div className="flex items-center w-full">
-                      <label className="font-bold w-1/4">Nombre</label>
+                    <div className="flex flex-col lg:flex-row items-center w-full">
+                      <label className="font-bold w-full lg:w-1/4">Nombre</label>
                       <input
-                        className="ml-2 w-2/4 bg-gray-50 rounded-lg border border-blue-200 focus:outline-none"
+                        className="ml-2 w-full lg:w-2/4 bg-gray-50 rounded-lg border border-blue-200 focus:outline-none"
                         value={post?.contact_information?.contact_name || ""}
                         onChange={(e) =>
                           setPost({
@@ -244,10 +252,10 @@ const Job = () => {
                         }
                       />
                     </div>
-                    <div className="flex items-center w-full">
-                      <label className="font-bold w-1/4">Correo</label>
+                    <div className="flex flex-col lg:flex-row items-center w-full">
+                      <label className="font-bold w-full lg:w-1/4">Correo</label>
                       <input
-                        className="ml-2 w-2/4 bg-gray-50 rounded-lg border border-blue-200 focus:outline-none"
+                        className="ml-2 w-full lg:w-2/4 bg-gray-50 rounded-lg border border-blue-200 focus:outline-none"
                         value={post?.contact_information?.contact_email || ""}
                         onChange={(e) =>
                           setPost({
@@ -260,11 +268,10 @@ const Job = () => {
                         }
                       />
                     </div>
-
-                    <div className="flex items-center w-full">
-                      <label className="font-bold w-1/4">Telefono</label>
+                    <div className="flex flex-col lg:flex-row items-center w-full">
+                      <label className="font-bold w-full lg:w-1/4">Telefono</label>
                       <input
-                        className="ml-2 w-2/4 bg-gray-50 rounded-lg border border-blue-200 focus:outline-none"
+                        className="ml-2 w-full lg:w-2/4 bg-gray-50 rounded-lg border border-blue-200 focus:outline-none"
                         value={post?.contact_information?.contact_phone || ""}
                         onChange={(e) =>
                           setPost({
@@ -279,7 +286,8 @@ const Job = () => {
                     </div>
                   </div>
 
-                  <div className="w-1/2 pl-8 flex-col flex-wrap mt-4 mb-4">
+                  <div className="w-full sm:w-1/2 p-2 mt-6">
+
                     <h3 className="text-xl font-bold ">Método de solicitud</h3>
                     <textarea
                       className="mb-4 w-full bg-gray-50 rounded-lg border border-blue-200 focus:outline-none resize-none"
@@ -297,6 +305,7 @@ const Job = () => {
                       }
                     />
                   </div>
+
                 </div>
               </div>
 

@@ -1,17 +1,28 @@
 import Sidebar from "./Sidebar";
-import { useContext } from 'react';
-import { SidebarContext } from '@/context/SidebarContext';
+import { useContext } from "react";
+import { SidebarContext } from "@/context/SidebarContext";
+import NavBar from "./Navbar";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const BaseLayout = ({ children }) => {
   const { isCollapsed } = useContext(SidebarContext);
-
-  const layoutClass = isCollapsed ? 'layout-collapsed' : 'layout-expanded';
+  const matches = useMediaQuery("(min-width:600px)");
+  const layoutClass = isCollapsed ? "layout-collapsed" : "layout-expanded";
 
   return (
-    <div className={`layout ${layoutClass}`}>
-      <Sidebar />
-      <main className="layout__main-content">{children}</main>
-    </div>
+    <>
+      {matches ? (
+        <div className={`layout ${layoutClass}`}>
+          <Sidebar />
+          <main className="layout__main-content">{children}</main>
+        </div>
+      ) : (
+        <div>
+          <NavBar />
+          <main className="layout__main-content">{children}</main>
+        </div>
+      )}
+    </>
   );
 };
 

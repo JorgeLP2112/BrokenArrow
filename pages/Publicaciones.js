@@ -1,30 +1,24 @@
-import Footer from "@/components/footer";
 import BaseLayout from "@/components/BaseLayout";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { CldImage } from "next-cloudinary";
 import Link from "next/link";
-import { el } from "date-fns/locale";
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const Home = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [posts, setPosts] = useState([]);
+  const matches = useMediaQuery('(min-width:600px)');
 
   useEffect(() => {
     if (status !== "loading") {
       if (!session) {
         router.push("/");
-      } else if (
-        session.user.isNewUser === true &&
-        session.user.roles[0] === "User"
-      ) {
-        router.push("/ProfileForm");
-      } else if (
-        session.user.isNewUser === false &&
-        session.user.roles[0] === "Admin"
-      ) {
+      } else if (session.user.isNewUser === true) {
+        router.push("/ProfileForm/");
+      } else if (session.user.isNewUser === false && session.user.roles[0] === "Admin") {
         router.push("/Admins/Usuarios");
       }
     }
@@ -49,7 +43,16 @@ const Home = () => {
     <BaseLayout>
       <div className="min-h-screen bg-gray-200 py-8">
         <div className="container mx-auto px-4 w-9/10 flex">
-          <div className="w-3/4 ml-8" id="1">
+          {/* 
+          <div className="w-full md:w-1/4 ml-16 mb-8 md:mb-0 md:order-2">
+            <div className="sticky top-40">
+              <div className="bg-white rounded-lg shadow-md">
+                <p>Filtros</p>
+              </div>
+            </div>
+  </div>*/}
+
+          <div className="w-full md:w-3/4 ml-8 md:order-1" id="1">
             {posts.map((post, index) => (
               <div
                 key={index}
@@ -86,13 +89,9 @@ const Home = () => {
               </div>
             ))}
           </div>
-          <div className="w-1/4 ml-16" id="2">
-            <div className="sticky top-40">
-              <div className="bg-white rounded-lg shadow-md">
-                <p>Filtros</p>
-              </div>
-            </div>
-          </div>
+
+
+
         </div>
       </div>
     </BaseLayout>

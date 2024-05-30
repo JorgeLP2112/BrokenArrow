@@ -11,7 +11,7 @@ export default function App({
     <SessionProvider session={pageProps.session}>
       <SidebarProvider>
         <Head>
-          <title>JKB Jobs</title>
+          <title>UniTalent</title>
           <meta name="description" content="" />
           <link rel="icon" href="/favicon.ico" />
         </Head>

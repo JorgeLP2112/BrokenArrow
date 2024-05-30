@@ -1,59 +1,79 @@
 import Link from 'next/link'
 import Image from "next/image"
-import { Disclosure } from "@headlessui/react";
+import { Disclosure, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
+import { useRouter } from "next/router";
+import { useSession, signOut } from "next-auth/react";
 
 const Navbar = () => {
-    const navigation = [
-        "Sobre Nosotros",
-        "Equipo"
-    ];
+    const { data: session } = useSession();
+    const router = useRouter();
+
+    const options = [
+        { id: 1, name: 'Publicaciones', href: '/Publicaciones', rol: '' },
+        { id: 2, name: 'Usuarios', href: '/Admins/Usuarios', rol: 'Admin' },
+        { id: 3, name: 'Reportes', href: '/Admins/Reportes', rol: 'Admin' },
+        { id: 4, name: 'Comunidad', href: '/Users/Comunidad', rol: 'Estudiante' },
+        { id: 5, name: 'Nueva oferta', href: '/Posts/CrearOferta', rol: 'Empresa' },
+        { id: 6, name: 'Ofertas hechas', href: '/Posts/OfertasHechas', rol: 'Empresa' },
+        { id: 7, name: 'Perfil', href: '/Users/' + session?.user?.id, rol: 'User' },
+        { id: 8, name: 'Cerrar sesión', href: 'LogOff', rol: '' }
+    ]
+
+    const selectedOption = (href) => {
+        if (href === 'LogOff') {
+            signOut({ callbackUrl: '/' })
+        } else {
+            router.push(href);
+        }
+    }
 
     return (
         <div className="w-full">
-            <nav className="container relative flex flex-wrap items-center justify-between p-8 mx-auto lg:justify-between xl:px-0">
-                {/* Logo  */}
-                <Disclosure>
-                    {({ open }) => (
-                        <>
-                            <div className="flex flex-wrap items-center justify-between w-full lg:w-auto">
-                                <Link href="/">
-                                    <span className="flex items-center space-x-2 text-2xl font-medium text-indigo-500 dark:text-gray-100">
+            <nav className="container relative flex flex-wrap items-center justify-between p-5 mx-auto bg-jkb-primary">
+                <div className="flex justify-between w-full">
+                    <Disclosure>
+                        {({ open }) => (
+                            <>
+                                <div>
+                                    <Link href="/">
                                         <span>
                                             <Image
-                                                src="/img/logo.svg"
+                                                src="/logo.png"
                                                 alt="Logo"
                                                 width="32"
                                                 height="32"
                                                 className="w-8"
                                             />
                                         </span>
-                                        <span>Nombre(work in progress)</span>
-                                    </span>
-                                </Link>
-                            </div>
-                        </>
-                    )}
-                </Disclosure>
-                <div className="hidden text-center lg:flex lg:items-center">
-                    <ul className="items-center justify-end flex-1 pt-6 list-none lg:pt-0 lg:flex">
-                        {navigation.map((menu, index) => (
-                            <li className="mr-3 nav__item" key={index}>
-                                <Link href="/" className="inline-block px-4 py-2 text-lg font-normal text-gray-800 no-underline rounded-md dark:text-gray-300 hover:text-jkb-tertiary focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none dark:focus:bg-gray-800">
-                                    {menu}
-                                </Link>
-                            </li>
+                                    </Link>
+                                </div>
+                            </>
+                        )}
+                    </Disclosure>
 
-                        ))}
-                        <li className="mr-3 nav__item">
-
-                            <Link href="/Login" className="w-full px-6 py-2 mt-3 text-center text-white bg-jkb-tertiary rounded-md lg:ml-5">
-                                Inicia Sesión
-                            </Link>
-                        </li>
-
-                    </ul>
+                    <div>
+                        <Listbox onChange={selectedOption}>
+                            <ListboxButton className="text-white font-bold ">
+                                ☰
+                            </ListboxButton>
+                            <ListboxOptions anchor="bottom">
+                                {options.map((option) => {
+                                    if ((session?.user?.roles[0] === "Admin" && (option.rol === '' || option.rol === 'Admin')) ||
+                                        (session?.user?.roles[1] === "Estudiante" && (option.rol === '' || option.rol === 'Estudiante')) ||
+                                        (session?.user?.roles[1] === "Empresa" && (option.rol === '' || option.rol === 'Empresa')) ||
+                                        (session?.user?.roles[0] === "User" && option.rol === '')) {
+                                        return (
+                                            <ListboxOption key={option.id} value={option.href}
+                                                className={`group flex cursor-default items-center gap-2 rounded-lg py-1.5 px-3 border-b ${router.pathname === option.href ? "bg-jkb-primary" : "bg-white"}`}>
+                                                <p className='p-1'>{option.name}</p>
+                                            </ListboxOption>
+                                        )
+                                    }
+                                })}
+                            </ListboxOptions>
+                        </Listbox>
+                    </div>
                 </div>
-
             </nav>
         </div>
     );
