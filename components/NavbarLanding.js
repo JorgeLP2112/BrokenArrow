@@ -26,7 +26,7 @@ const Navbar = () => {
                                                 className="w-8"
                                             />
                                         </span>
-                                        <span>UniTalent</span>
+                                        <span className='text-jkb-tertiary'>UniTalent</span>
                                     </span >
                                 </Link >
                                 <Link href="/Login" className="w-full px-6 py-2 mt-3 text-center text-white bg-jkb-tertiary rounded-md lg:ml-5 lg:hidden">

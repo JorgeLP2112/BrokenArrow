@@ -24,19 +24,19 @@ export default function Footer() {
                             </Link>
                         </div>
 
-
-                        <div className="mt-5">
+                        <div className="mt-5 flex items-center">
                             <a
                                 href="https://vercel.com/?utm_source=web3templates&utm_campaign=oss"
                                 target="_blank"
                                 rel="noopener"
-                                className="relative block w-44">
+                                className="relative block w-44 flex items-center">
                                 <Image
-                                    src="/img/vercel.svg"
+                                    src="/LivingLab.png"
                                     alt="Powered by Vercel"
-                                    width="212"
-                                    height="44"
+                                    width="50"
+                                    height="50"
                                 />
+                                <span className="text-gray-400">En colaboracion con Living Lab</span>
                             </a>
                         </div>
                     </div>
