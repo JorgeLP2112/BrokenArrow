@@ -45,7 +45,7 @@ const Home = () => {
 
                 <div className="border-1 shadow-lg shadow-gray-400 rounded-lg">
 {/*------------------Contenedor superior del perfil*/}
-                    <div className="flex flex-wrap rounded-t-lg">
+                    <div className="flex flex-wrap bg-jkb-tertiary rounded-t-lg">
         {/*-------------Contenedor de foto de perfil */}
                         <div className="w-1/2 sm:w-1/2 lg:w-1/4 mx-auto sm:mx-0 flex justify-center items-center">
                             <div className="border-4 border-jkb-secondary wx-auto lg:h-48 lg:w-48 m-4 overflow-hidden sm:rounded-full sm:relative sm:p-0">
@@ -54,23 +54,25 @@ const Home = () => {
                         </div>
         {/*-----------------Contenedor del Nombre de usuario y carrera */}
                         <div className="flex flex-col px-auto py-0 sm:py-5 ">
-                            <div className="h-auto w-auto ml-5 sm:ml-0 sm:mt-5 sm:text-center text-start sm:text-10">
-                                <p className="font-poppins font-bold text-heading sm:text-4xl text-2xl">
-                                    {user?.type === "Estudiante" ? user?.name + " " + user?.lastname : user?.company_name}
-                                </p>
-                                {user?.type === "Estudiante" ? <p className="text-lg text-heading text-jkb-tertiary font-bold">{user?.education?.degree}</p> : null}
-                            </div>
-                            <div className=" flex flex-col py-3 mx-5 sm:ml-6 lg:ml-24 min-ml-3">
+                                    <div className={`h-auto w-auto ml-5 sm:ml-0 sm:mt-5 sm:text-center text-start sm:text-10 ${user?.type !== "Estudiante" ? "flex items-center justify-center h-full mr-3 sm:mr-0 mb-3 sm:mb-0" : ""}`}>
+                                        <p className="font-poppins font-bold text-heading sm:text-4xl text-2xl">
+                                            {user?.type === "Estudiante" ? user?.name + " " + user?.lastname : user?.company_name}
+                                        </p>
+                                        {user?.type === "Estudiante" ? <p className="text-lg text-heading text-jkb-secondary font-bold">{user?.education?.degree}</p> : null}
+                                    </div>
+                            {user?.type === "Estudiante" && (
+                                <div className="flex flex-col py-3 mx-5 sm:ml-6 lg:ml-24 min-ml-3">
                                 <h2 className="text-lg font-poppins font-bold text-top-color">Sobre mí</h2>
-                                <div className="border-2 w-32 border-jkb-primary my-3"></div>
-                                <p>{user?.about}</p>
-                            </div>
+                                <div className="border-2 w-32 border-jkb-secondary my-3"></div>
+                                <p className="font-medium">{user?.about}</p>
+                                </div>
+                            )}
                         </div>
                     </div>
                     {/*Contenedor de la parte baja del perfil */}
                     <div className="p-2">
 
-                        <div className="flex flex-col sm:flex-row w-full">
+                        <div className="flex flex-col mt-2 sm:flex-row w-full">
 
                             {user?.type === "Estudiante" ? (
     /*------------------------------Contenedor de la columna izquierda del perfil */
@@ -231,28 +233,39 @@ const Home = () => {
                                 </>
                             ) : (
                                 <>
-                                    <div className="flex flex-col sm:w-1/3 sm:ml-4">
+{/*-----------------------Contenedor de los datos del Perfil de una Empresa */}
+
+                {/*-----------------------Contenedor de la columna izquierda */}
+                                    <div className="flex flex-col px-5 py-3 sm:w-1/3 sm:ml-4 order-1 sm:order-none">
                                         <h2 className="text-xl font-bold">Información de contacto</h2>
+                                        <div className="border-2 w-32 border-jkb-primary my-3"></div>
 
                                         <h3 className="text-lg font-semibold mt-2">Dirección de correo</h3>
+                                        <div className="border-2 w-32 border-gray-300 my-2"></div>
                                         <p>{user?.contact_information?.email}</p>
 
                                         <h3 className="text-lg font-semibold mt-2">Teléfono</h3>
+                                        <div className="border-2 w-32 border-gray-300 my-2"></div>
                                         <p>{user?.contact_information?.phone}</p>
+
+                                        <h2 className="text-xl font-bold mt-4">Sitio oficial</h2>
+                                        <div className="border-2 w-32 border-jkb-primary my-3"></div>
+                                        <a href={user?.website} target="_blank" rel="noopener noreferrer">{user?.website}</a>
                                     </div>
 
-                                    <div className="flex flex-col sm:w-1/3">
+                {/*-----------------------Contenedor de la columna derecha */}
+                                    <div className="flex flex-col flex-grow px-5 py-3 sm:w-1/3">
                                         <h2 className="text-xl font-bold">Sobre nosotros</h2>
+                                        <div className="border-2 w-32 border-jkb-primary my-3"></div>
                                         <p>{user?.company_description}</p>
 
                                         <h2 className="text-xl font-bold mt-4">Sector</h2>
+                                        <div className="border-2 w-32 border-jkb-primary my-3"></div>
                                         <p>{user?.industry}</p>
 
                                         <h2 className="text-xl font-bold mt-4">Dirección</h2>
+                                        <div className="border-2 w-32 border-jkb-primary my-3"></div>
                                         <p>{user?.location}</p>
-
-                                        <h2 className="text-xl font-bold mt-4">Sitio oficial</h2>
-                                        <a href={user?.website} target="_blank" rel="noopener noreferrer">{user?.website}</a>
                                     </div>
                                 </>)}
                         </div>

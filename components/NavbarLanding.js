@@ -4,7 +4,7 @@ import { Disclosure } from "@headlessui/react";
 
 const Navbar = () => {
     const navigation = [
-      ""
+        ""
     ];
 
     return (
@@ -16,7 +16,7 @@ const Navbar = () => {
                         <>
                             <div className="flex flex-wrap items-center justify-between w-full lg:w-auto">
                                 <Link href="/">
-                                    <span className="flex items-center space-x-2 text-2xl font-medium text-indigo-500 dark:text-gray-100">
+                                    <span className="flex items-center space-x-2 text-2xl font-medium text-jkb-tertiary dark:text-gray-100">
                                         <span>
                                             <Image
                                                 src="/logo.png"
@@ -29,6 +29,9 @@ const Navbar = () => {
                                         <span>UniTalent</span>
                                     </span >
                                 </Link >
+                                <Link href="/Login" className="w-full px-6 py-2 mt-3 text-center text-white bg-jkb-tertiary rounded-md lg:ml-5 lg:hidden">
+                                    Inicia Sesión
+                                </Link>
                             </div >
                         </>
                     )}
