@@ -236,7 +236,7 @@ const Home = () => {
 {/*-----------------------Contenedor de los datos del Perfil de una Empresa */}
 
                 {/*-----------------------Contenedor de la columna izquierda */}
-                                    <div className="flex flex-col px-5 py-3 sm:w-1/3 sm:ml-4">
+                                    <div className="flex flex-col px-5 py-3 sm:w-1/3 sm:ml-4 order-1 sm:order-none">
                                         <h2 className="text-xl font-bold">Información de contacto</h2>
                                         <div className="border-2 w-32 border-jkb-primary my-3"></div>
 
